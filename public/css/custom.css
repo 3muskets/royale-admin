@@ -1,0 +1,51 @@
+.sorting 
+{ 
+    cursor:pointer;
+    position:relative;
+    padding-right: 2em !important;
+}
+
+.sorting::before 
+{ 
+    content: "\2191";
+    opacity:0.4;
+    right:0.9em;
+    bottom:0.2em;
+    position:absolute;
+}
+
+.sorting::after 
+{ 
+    content: "\2193";
+    opacity:0.4;
+    right:0.2em;
+    bottom:0.2em;
+    position:absolute;
+}
+
+.sorting-asc::before 
+{ 
+    opacity:1;
+}
+
+.sorting-desc::after 
+{ 
+    opacity:1;
+}
+
+.tblActions
+{
+    background-color: transparent !important;
+}
+
+.tblActions tr
+{
+    background-color: transparent !important;
+}
+
+.tblActions tr td
+{   
+    background-color: transparent !important;
+    border: 0;
+    padding: 0px;
+}

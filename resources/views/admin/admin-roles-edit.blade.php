@@ -1,0 +1,487 @@
+@extends('layouts.app')
+
+@section('head')
+
+<script type="text/javascript">
+
+    $(document).ready(function() 
+    {
+        prepareLocale();
+
+        getMainData();
+
+        $("#mainForm").on('submit',(function(e){
+            e.preventDefault();
+            submitMainForm();
+        }));
+    });
+
+    var check_old = [];
+
+    function prepareLocale()
+    {
+        locale['info'] = "{!! __('common.modal.info') !!}";
+        locale['success'] = "{!! __('common.modal.success') !!}";
+        locale['error'] = "{!! __('common.modal.error') !!}";
+    }
+
+    function getMainData()
+    {
+        $("#mainForm").attr("enabled",1);
+
+        var containerId = "card-body";
+
+        $("#main-spinner").show();
+        $("#main-table").hide();
+
+        var data = {};
+
+        data["id"] = utils.getParameterByName('id'); 
+
+        $.ajax({
+            type: "GET",
+            url: "/ajax/admins/roles/permission",
+            data: data,
+            success: function(data) 
+            {
+                if(data.length > 0)
+                {
+                    mainData = JSON.parse(data);
+                }
+                else
+                {
+                    mainData = [];
+                }
+
+                loadMainData(containerId);
+            }
+        });
+    }
+
+    function loadMainData(containerId)
+    {
+        document.getElementById('name').value = mainData.results[0]["role_name"];
+
+        for (var i = 0; i < mainData.results.length ; i++)
+        {
+            if(mainData.results[i]["is_deleted"] == 0)
+            {
+                // Check
+                $("#"+mainData.results[i]["type"]).prop("checked", true);
+
+                $("#"+mainData.results[i]["type"]).parent().parent().parent().parent().prev('input[type="checkbox"]').prop('checked', true);
+                $("#"+mainData.results[i]["type"]).closest("li:has(li)").children("input[type='checkbox']").prop('checked', true);
+            }
+            else
+            {
+                // Uncheck
+                $("#"+mainData.results[i]["type"]).prop("checked", false);
+            }
+
+            check_old.push(mainData.results[i]["type"] + '-' + mainData.results[i]["is_deleted"]);
+            
+        }
+    }
+
+    function submitMainForm()
+    {   
+        if($("#mainForm").attr("enabled") == 0)
+        {
+            return;
+        }
+
+        $("#mainForm").attr("enabled",0);
+
+        var data  = {};
+        var check = [];
+
+        $.each($("input[type='checkbox']"), function(){
+            var id = $(this).attr('id');
+            var isChecked =  $("#"+id).is(':checked');
+            if(isChecked == true)
+            {
+               $("#"+id).val(0);
+
+            }
+            else
+            {
+                $("#"+id).val(1);
+            }
+
+            if(!id.includes("parent"))
+            {
+                check.push(id + '-' + $("#"+id).val());
+            }
+        });
+
+        var log_data = '{"name":"'+ $("#name").val() +'","check":"'+check_old+'"}';
+        
+        data["name"] = $("#name").val();
+        data["id"] = utils.getParameterByName('id');
+        data["check"] = check;
+        data["log_old"] = log_data;
+
+        utils.startLoadingBtn("btnSubmit","mainForm");
+
+        $.ajax({
+            url: "/ajax/admins/roles/update",
+            type: "POST",
+            data:  data,
+            success: function(data)
+            {
+            // console.log(data);
+
+            utils.stopLoadingBtn("btnSubmit","mainForm");
+
+            var obj = JSON.parse(data);
+
+            if(obj.status == 1)
+            {
+                utils.showModal(locale['info'],locale['success'],obj.status,onMainModalDismiss);
+            }
+            else
+            {
+                utils.showModal(locale['error'],obj.error,obj.status,onMainModalDismissError);
+            }
+        },
+        error: function(){}             
+        }); 
+    }
+
+    function onMainModalDismiss()
+    {
+
+        window.location.href = "/admins/roles";
+    }
+
+    function onMainModalDismissError()
+    {
+        $("#mainForm").attr("enabled",1);
+    }
+
+    $(function () {
+        $(".checkall").click(function () {
+            $(this).closest('div').find(':checkbox').prop('checked', this.checked);
+        });
+    });
+
+    $(function () {
+        $(".checkul").click(function () {
+            $(this).next('ul').find(':checkbox').prop('checked', this.checked);
+        });
+    });
+
+    $(function() {
+        $(document).on("change", "li:has(li) > input[type='checkbox']", function() {
+            $(this).parent().parent().prev('input[type="checkbox"]').prop('checked', this.checked);
+            $(this).siblings('ul').find("input[type='checkbox']").prop('checked', this.checked);
+        });
+
+        $(document).on("change", "input[type='checkbox'] ~ ul input[type='checkbox']", function() {
+            var l_1 = $(this).parent().parent().parent().find('.child').nextAll().find('input:checked').length;
+            var l_2 = $(this).parent().parent().find('input:checked').length;
+            var c = $(this).parent().find("input[type='checkbox']").is(':checked');
+
+            if (l_2 == 0 && c == false) 
+            {
+                $(this).parent().parent().parent().parent().prev('input[type="checkbox"]').prop('checked', this.checked);
+                $(this).closest("li:has(li)").children("input[type='checkbox']").prop('checked', c);
+            } 
+            else if (l_1 > 0 && c == true || l_2 > 0 && c == true) 
+            {
+                $(this).parent().parent().parent().parent().prev('input[type="checkbox"]').prop('checked', this.checked);
+                $(this).closest("li:has(li)").children("input[type='checkbox']").prop('checked', c);
+            }
+        });
+    })
+
+</script>
+
+<style>
+
+    .heading 
+    {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    #entry_valid, #entry_non_valid 
+    {
+        display: none;
+        float: right
+    }
+
+    legend
+    {
+        width:50px;
+        padding:0 10px;
+        border-bottom:none;
+    }
+
+    li
+    {
+        list-style-type: none;
+    }
+
+</style>
+
+@endsection
+
+@section('content')
+
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">{{ __('app.admins.admin.create.breadcrumb.admins') }}</li>
+    <li class="breadcrumb-item">
+        <a href="/admins/roles">
+            {{ __('app.admins.admin.breadcrumb.admins_role') }}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">{{ __('app.admins.admin.edit.breadcrumb.admins_role.edit') }}</li>
+</ol>
+
+<div class="container-fluid">
+    <div class="animated fadeIn">
+
+        <div class="card">
+
+            <form method="POST" id="mainForm">
+                @csrf
+
+                <div class="card-header">
+                    <strong>{{ __('app.admins.admins_role.edit.header') }}</strong>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+
+                            <div class="heading" style=" margin-bottom: 1rem">
+                                {{ __('app.admins.admins_role.edit.details') }} 
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+
+                                    <label>{{ __('app.admins.admins_role.edit.username') }}</label>
+
+                                </div>
+                                <div class="col-sm-8">
+
+                                    <input type="text" name="name" id="name" class="form-control" readonly="">
+
+                                </div>
+
+                            </div>
+                    </div>
+
+                </div>                
+                    <fieldset class="form-group border" style="width:100%">
+                        <legend class="w-auto px-2">{{ __('app.admins.admins_role.create.ca') }} </legend>
+                        <ul>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="agent" id="parent-am">Agent Management
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" id="create_downline">Create Downline
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-am">Downline List
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_downline_list">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_downline_list">Edit
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-am">Agent Credit
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_agent_credit">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_agent_credit">Edit
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </div>
+                                <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="member" id="parent-mm">Member Management
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="member_credit">Member Credit
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-mm">Member Level Setting
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_member_levelsetting">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_member_levelsetting">Edit
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </div>
+                                <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="banking" id="parent-bk">Banking
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" class="checkul" id="banking_info" >Bank Info
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" class="checkul" id="dw_request">DW Request
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </div>
+                                <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="crypto" id="parent-ct">Crypto
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" class="checkul" id="crypto_setting" >Crypto Setting
+                                                <ul>
+                                                    <li>
+                                                        <input type="checkbox" id="view_crypto_setting">View
+                                                    </li>
+                                                    <li>
+                                                        <input type="checkbox" id="edit_crypto_setting">Edit
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="bonus" id="parent-bn">Bonus
+                                        <ul>
+                                            <li>
+                                                <input type="checkbox" class="checkul" id="parent-bn">Rebate Setting
+                                                <ul>
+                                                    <li>
+                                                        <input type="checkbox" id="view_rebate_setting">View
+                                                    </li>
+                                                    <li>
+                                                        <input type="checkbox" id="edit_rebate_setting">Edit
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" class="checkul" id="parent-bn">Cash Back Setting
+                                                <ul>
+                                                    <li>
+                                                        <input type="checkbox" id="view_cashback_setting">View
+                                                    </li>
+                                                    <li>
+                                                        <input type="checkbox" id="edit_cashback_setting">Edit
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </div>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="row form-group">
+                                            <li>
+                                            <input type="checkbox" class="checkall" name="membermessage" id="member_msg">Member Messgae
+                                            </li>
+                                    </div>
+                                    <div class="row form-group">
+                                    <li>
+                                        <input type="checkbox" class="checkall" name="report" id="parent-rp">Report
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" id="txn_history_report">Transaction History
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="win_loss_report">Win Loss
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="win_loss_by_product_report">Win Loss By Prodcut
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="agent_credit_report">Agent Credit Report
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="member_credit_report">Member Credit Report
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="member_referral_report">Member Referral Report
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </div>
+                                    <div class="row form-group">
+                                        <li>
+                                            <input type="checkbox" class="checkall" name="settings" id="parent-s">{{ __('app.admins.admins_role.create.setting') }}
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" id="create_admin">{{ __('app.admins.admins_role.create.create_admin') }}
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-s">{{ __('app.admins.admins_role.create.admin_list') }}
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_admin_list">{{ __('app.admins.admins_role.create.view') }}
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_admin_list">{{ __('app.admins.admins_role.create.edit') }}
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-s">Default Agent
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_default_agent">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_default_agent">Edit
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </ul>
+                </fieldset>       
+            </div>
+
+            <div class="card-footer">
+
+                <button id="btnSubmit" class="btn btn-primary btn-ladda" data-style="expand-right">
+                    <i class="fa fa-dot-circle-o"></i> {{ __('app.admins.admins_role.edit.update') }}
+                </button>
+
+            </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+@endsection

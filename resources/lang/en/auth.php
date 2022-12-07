@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'failed' => '*Credentials not match Record*',
+    'inactive' => '*Account inactive. Contact Upline.*',
+    'throttle' => '*Too many login attempts. Try Again*',
+    'language' => '*Language*',
 ];
