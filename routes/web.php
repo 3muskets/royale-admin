@@ -374,6 +374,14 @@ Route::get('/ajax/banner/getList', 'ViewControllers\CMSViewController@getMainBan
 Route::get('/ajax/announcement/getList', 'ViewControllers\CMSViewController@getAnnouncementList');
 Route::get('/ajax/popup/getDetail', 'ViewControllers\CMSViewController@getPopUpDetail');
 
+Route::post('/ajax/cms/banner/create', 'ViewControllers\CMSViewController@createBanner');
+Route::post('/ajax/cms/banner/update', 'ViewControllers\CMSViewController@updateBanner');
+
+
+Route::post('/ajax/cms/announcement/create', 'ViewControllers\CMSViewController@createAnnouncement');
+Route::post('/ajax/cms/announcement/update', 'ViewControllers\CMSViewController@updateAnnouncement');
+
+Route::post('/ajax/cms/popup/update', 'ViewControllers\CMSViewController@updatePopup');
 
 /*
 |--------------------------------------------------------------------------
