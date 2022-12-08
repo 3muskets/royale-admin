@@ -259,7 +259,7 @@ class MemberDWController extends Controller
     public static function approveDeposit(Request $request)
     {
         DB::beginTransaction();
-
+        
 
         try
         {
@@ -323,6 +323,8 @@ class MemberDWController extends Controller
 
             $typeTo = 2;
             $remarkFrom = 'Member Add Credit, From ADMIN';
+
+            $uplineCode = 'ADM1';
 
             if($promoId != '')
                 $remarkFrom = 'Member Add Credit, From '.$uplineCode.'(With Promotion Bonus)';

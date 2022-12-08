@@ -935,6 +935,7 @@ class BonusController extends Controller
                     FROM member_dw
                     WHERE member_id = ?
                     AND promo_id = ?
+                    AND status = 'a'
                     ",[$userId,$promoId]);
 
                 if(sizeof($db) == 0)
