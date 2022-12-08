@@ -551,7 +551,7 @@ function showDetailsModal(rowId)
         btnReject.innerHTML = "{!! __('app.banking.dw.actions.reject') !!}";
         btnReject.className = "btn btn-primary btn-ladda";
         btnReject.onclick = doReject;
-        btnReject.rowId = i;
+        btnReject.rowId = rowId;
         btnReject.style.margin = "0 15px 0 0";
         btnReject.value = "2";
 
