@@ -33,7 +33,7 @@ class BankInfoViewController extends Controller
     {  
 
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.banking_info');
+        Helper::checkUAC('permissions.view_banking_acc');
 
         $optionsStatus = BankInfoController::getOptionsStatus();
         $optionsSuspended = BankInfoController::getOptionsSuspended();
@@ -101,7 +101,7 @@ class BankInfoViewController extends Controller
     {
 
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.banking_info');
+        Helper::checkUAC('permissions.view_banking_acc');
 
         $data = BankInfoController::getList($request);
 

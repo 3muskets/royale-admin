@@ -33,7 +33,7 @@ class MemberDWReqViewController extends Controller
     {   
         // Helper::checkUAC('system.accounts.member');
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.dw_request');  
+        Helper::checkUAC('permissions.view_dw_request');  
 
 
         return view('member.member-dwreq-list');
@@ -44,7 +44,7 @@ class MemberDWReqViewController extends Controller
         // Helper::checkUAC('system.accounts.member');
 
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.dw_request');  
+        Helper::checkUAC('permissions.view_dw_request');  
 
         $data = MemberDWController::getList($request);
 
@@ -56,7 +56,7 @@ class MemberDWReqViewController extends Controller
         // Helper::checkUAC('system.accounts.member');
 
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.dw_request');  
+        Helper::checkUAC('permissions.view_dw_request');  
 
         $data = MemberDWController::approve($request);
 
@@ -68,7 +68,7 @@ class MemberDWReqViewController extends Controller
         // Helper::checkUAC('system.accounts.member');
         
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.dw_request');  
+        Helper::checkUAC('permissions.view_dw_request');  
 
         $data = MemberDWController::reject($request);
 

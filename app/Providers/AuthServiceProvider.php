@@ -125,6 +125,17 @@ class AuthServiceProvider extends ServiceProvider
 
         });
 
+        Gate::define('permissions.view_member_list', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('view_member_list'))
+                return true;
+            else
+                return false;
+
+        });
+
+
         Gate::define('permissions.view_member_levelsetting', function ($user) 
         {
             //for settings
@@ -145,24 +156,28 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
-        Gate::define('permissions.banking_info', function ($user) 
+        Gate::define('permissions.view_banking_acc', function ($user) 
         {
             //for settings
-            if(Helper::checkUserPermissions('banking_info'))
+            if(Helper::checkUserPermissions('view_banking_acc'))
                 return true;
             else
                 return false;
 
         });
-        Gate::define('permissions.dw_request', function ($user) 
+        Gate::define('permissions.view_dw_request', function ($user) 
         {
             //for settings
-            if(Helper::checkUserPermissions('dw_request'))
+            if(Helper::checkUserPermissions('view_dw_request'))
                 return true;
             else
                 return false;
 
         });
+
+
+
+        
 
         Gate::define('permissions.member_msg', function ($user) 
         {

@@ -290,10 +290,10 @@
                                                     <input type="checkbox" class="checkul" id="parent-member_list">Member Listing
                                                     <ul>
                                                         <li>
-                                                            <input type="checkbox" id="member_list">View
+                                                            <input type="checkbox" id="view_member_list">View
                                                         </li>
                                                         <li>
-                                                            <input type="checkbox" id="member_list">Edit
+                                                            <input type="checkbox" id="edit_member_list">Edit
                                                         </li>
                                                     </ul>
                                                 </li>

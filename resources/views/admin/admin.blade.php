@@ -72,7 +72,6 @@ function loadMainData(containerId)
 
     var fields = [                           
                     ["username",locale['mainData.username'],true,false]
-                    , ["user_type",'User Type',true,false]
                     , ["type",'Role Type',true,false]
                     ,["created_at",locale['mainData.dateregistered'],true,false]
                     ,["status",locale['mainData.status'],false,false]

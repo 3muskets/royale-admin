@@ -401,27 +401,29 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/home"><i class="icon-home"></i> {{ __('app.sidebar.home') }}</a>
                     </li>
-
-                    @canany(['permissions.member_credit', 'permissions.view_member_levelsetting'])
+                    @can('system.accounts.admin')
+                    @canany(['permissions.member_credit','permissions.view_member_list','permissions.view_member_levelsetting'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> 
                              {{ __('app.sidebar.membermanagement') }}
                         </a>
                         
                         <ul class="nav-dropdown-items">
+                            @can('permissions.view_member_list')
                             <li class="nav-item">
                                 <a class="nav-link" href="/merchants/merchant/member"><i class="icon-cursor"></i> 
                                     {{ __('app.sidebar.membermanagement.list') }}
                                 </a>
                             </li>
+                            @endcan
                             @can('permissions.member_credit')
                             <li class="nav-item">
                                 <a class="nav-link" href="/merchants/merchant/member/credit"><i class="icon-cursor"></i> 
                                     {{ __('app.sidebar.membermanagement.credit') }}
                                 </a>
                             </li>
-
                             @endcan
+
                             @can('system.accounts.admin')
                             @can('permissions.view_member_levelsetting')
                             <li class="nav-item">
@@ -434,22 +436,24 @@
                         </ul>
                     </li> 
                     @endcan
+                    @endcan
+
                     @can('system.accounts.admin')
-                    @canany(['permissions.banking_info', 'permissions.dw_request'])
+                    @canany(['permissions.view_banking_acc', 'permissions.view_dw_request'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> 
                              {{ __('app.sidebar.banking') }}
                         </a>
                         
                         <ul class="nav-dropdown-items">                           
-                            @can('permissions.banking_info') 
+                            @can('permissions.view_banking_acc') 
                             <li class="nav-item">
                                 <a class="nav-link" href="/banking/bankinfo"><i class="icon-info"></i>
                                    Bank Account List
                                 </a>
                             </li>
                             @endcan                 
-                            @can('permissions.dw_request')
+                            @can('permissions.view_dw_request')
                             <li class="nav-item">
                                 <a class="nav-link" href="/member/dwreq"><i class="icon-refresh"></i>
                                    {{ __('app.sidebar.banking.dwrequest') }}
