@@ -242,7 +242,7 @@ class AdminController extends Controller
             $username = $request->input('username');
             $password = $request->input('password');
             $status = $request->input('status');
-            /*$roleId = $request->input('role');*/
+            $roleId = $request->input('role');
 
             $userId = Auth::user()->admin_id;
 
