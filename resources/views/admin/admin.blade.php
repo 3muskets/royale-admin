@@ -72,6 +72,8 @@ function loadMainData(containerId)
 
     var fields = [                           
                     ["username",locale['mainData.username'],true,false]
+                    , ["user_type",'User Type',true,false]
+                    , ["type",'Role Type',true,false]
                     ,["created_at",locale['mainData.dateregistered'],true,false]
                     ,["status",locale['mainData.status'],false,false]
                     @can('permissions.edit_admin_list') 
@@ -232,12 +234,12 @@ function createMainData()
 
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">{{ __('app.admins.admin.breadcrumb.admins') }}</li>
-    <li class="breadcrumb-item active">{{ __('app.admins.admin.breadcrumb.adminslist') }}</li>
+	<li class="breadcrumb-item">{{ __('app.admins.admin.breadcrumb.admins') }}</li>
+	<li class="breadcrumb-item active">{{ __('app.admins.admin.breadcrumb.adminslist') }}</li>
 </ol>
 
 <div class="container-fluid">
-    <div class="animated fadeIn">
+	<div class="animated fadeIn">
 
         <div class="card">
 
@@ -274,16 +276,16 @@ function createMainData()
 
         </div>
 
-        <div class="card">
+		<div class="card">
 
-            <div id="main-spinner" class="card-body"></div>
+			<div id="main-spinner" class="card-body"></div>
 
-            <div id="main-table" class="card-body"></div>
+			<div id="main-table" class="card-body"></div>
 
             <div id="notes" class="card-body">{{ __('common.notes.timezone') }}</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div id="modalChangePassword" class="modal fade" role="dialog">

@@ -45,14 +45,12 @@ class MemberCreditController extends Controller
 
     
             $sql = "
-                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator', IFNULL(e.username,'COMPANY') 'agent',f.payment_type
+                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator',f.payment_type
                     FROM member_credit_txn a
                     LEFT JOIN member b 
                     ON a.member_id = b.id
                     LEFT JOIN admin c
                     ON a.credit_by = c.id
-                    LEFT JOIN admin e
-                    ON b.admin_id = e.admin_id
                     LEFT JOIN member_dw f
                     ON a.dw_id = f.id
                     WHERE  b.username LIKE :username  

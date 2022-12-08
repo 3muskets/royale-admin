@@ -29,7 +29,7 @@ class AdminViewController extends Controller
     
     public function index()
     {
-        Helper::checkUAC('system.accounts.admin');
+        Helper::checkUAC('system.accounts.super.admin');
 
         Helper::checkUAC('permissions.view_admin_list');
 
@@ -38,7 +38,7 @@ class AdminViewController extends Controller
 
     public function new()
     {   
-        Helper::checkUAC('system.accounts.admin');
+        Helper::checkUAC('system.accounts.super.admin');
 
         Helper::checkUAC('permissions.create_admin');
 
@@ -55,7 +55,7 @@ class AdminViewController extends Controller
 
     public function details(Request $request)
     {
-        Helper::checkUAC('system.accounts.admin');
+        Helper::checkUAC('system.accounts.super.admin');
 
         Helper::checkUAC('permissions.view_admin_list');
 

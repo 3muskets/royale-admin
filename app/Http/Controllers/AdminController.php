@@ -160,7 +160,7 @@ class AdminController extends Controller
 
             $data = DB::update($sql,$params);
 
-/*            $data = DB::update($sql,$params);
+            $data = DB::update($sql,$params);
 
             $sql3 = "
                         INSERT INTO admin_role
@@ -176,7 +176,7 @@ class AdminController extends Controller
                     ,'role_id1' => $roleId
                 ];
 
-            DB::insert($sql3, $params3);*/
+            DB::insert($sql3, $params3);
 
 
             //logging
@@ -300,7 +300,7 @@ class AdminController extends Controller
 
             $sql = "
                 INSERT INTO admin(username,password,status,ws_channel,created_at,level,is_sub,admin_id)
-                VALUES(:username,:password,:status,'s',NOW(),0, 1,:userId)
+                VALUES(:username,:password,:status,'s',NOW(),0, 0,:userId)
                 ";
 
             $params = [
@@ -313,7 +313,7 @@ class AdminController extends Controller
             $data = DB::insert($sql,$params);
             $id = DB::getPdo()->lastInsertId();
             
-/*            $sql = "
+            $sql = "
                 INSERT INTO admin_role(admin_id,role_id)
                 VALUES(:id,:role_id)
                 ";
@@ -324,7 +324,7 @@ class AdminController extends Controller
                 ];
 
 
-            $data = DB::insert($sql,$params);*/
+            $data = DB::insert($sql,$params);
 
            
 

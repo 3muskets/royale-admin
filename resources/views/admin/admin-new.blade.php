@@ -231,7 +231,7 @@ function onMainModalDismissError()
                         </div>
                     </div>
 
-<!--                     <div class="row">
+                    <div class="row">
                         <div class="form-group col-sm-2">
 
                             <label>Admin Role</label>
@@ -243,7 +243,7 @@ function onMainModalDismissError()
                             </select>
                         </div>
                     </div>
- -->
+
 
                     <div class="row">
                         <div class="form-group col-sm-2">

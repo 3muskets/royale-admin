@@ -613,7 +613,7 @@
 
 
                     
-                    @can('system.accounts.admin')
+                    @can('system.accounts.super.admin')
                     @canany(['permissions.create_admin','permissions.view_admin_list','permissions.view_default_agent']) 
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> 
@@ -635,7 +635,7 @@
                                 </a>
                             </li>
                             @endcan
-<!--                             @can('system.accounts.super.admin')
+                            @can('system.accounts.admin')
                             <li class="nav-item">
                                 <a class="nav-link" href="/admins/roles/new"><i class="icon-settings"></i>  
                                     Create Admin Roles
@@ -646,7 +646,7 @@
                                     Admin Roles
                                 </a>
                             </li>
-                            @endcan -->
+                            @endcan
                         </ul>
                     </li>
                     @endcan

@@ -284,45 +284,26 @@
                             <div class="col-sm-4">
                                 <div class="row form-group">
                                     <li>
-                                        <input type="checkbox" class="checkall" name="agent" id="parent-am">Agent Management
-                                            <ul>
-                                                <li>
-                                                    <input type="checkbox" id="create_downline">Create Downline
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" class="checkul" id="parent-am">Downline List
-                                                    <ul>
-                                                        <li>
-                                                            <input type="checkbox" id="view_downline_list">View
-                                                        </li>
-                                                        <li>
-                                                            <input type="checkbox" id="edit_downline_list">Edit
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" class="checkul" id="parent-am">Agent Credit
-                                                    <ul>
-                                                        <li>
-                                                            <input type="checkbox" id="view_agent_credit">View
-                                                        </li>
-                                                        <li>
-                                                            <input type="checkbox" id="edit_agent_credit">Edit
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </div>
-                                <div class="row form-group">
-                                    <li>
                                         <input type="checkbox" class="checkall" name="member" id="parent-mm">Member Management
                                             <ul>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-member_list">Member Listing
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="member_list">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="member_list">Edit
+                                                        </li>
+                                                    </ul>
+                                                </li>
+
+
                                                 <li>
                                                     <input type="checkbox" class="checkul" id="member_credit">Member Credit
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" class="checkul" id="parent-mm">Member Level Setting
+                                                    <input type="checkbox" class="checkul" id="parent-memmber_levelsetting">Member Level Setting
                                                     <ul>
                                                         <li>
                                                             <input type="checkbox" id="view_member_levelsetting">View
@@ -340,51 +321,50 @@
                                         <input type="checkbox" class="checkall" name="banking" id="parent-bk">Banking
                                         <ul>
                                             <li>
-                                                <input type="checkbox" class="checkul" id="banking_info" >Bank Info
+                                                    <input type="checkbox" class="checkul" id="parent-banking_acc" >Bank Account List
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_banking_acc">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_banking_acc">Edit
+                                                        </li>  
+                                                    </ul> 
                                             </li>
+
                                             <li>
-                                                <input type="checkbox" class="checkul" id="dw_request">DW Request
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </div>
-                                <div class="row form-group">
-                                    <li>
-                                        <input type="checkbox" class="checkall" name="crypto" id="parent-ct">Crypto
-                                        <ul>
-                                            <li>
-                                                <input type="checkbox" class="checkul" id="crypto_setting" >Crypto Setting
-                                                <ul>
-                                                    <li>
-                                                        <input type="checkbox" id="view_crypto_setting">View
-                                                    </li>
-                                                    <li>
-                                                        <input type="checkbox" id="edit_crypto_setting">Edit
-                                                    </li>
-                                                </ul>
+                                                   <input type="checkbox" class="checkul" id="parent-dw_request" >DW Request
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_dw_request">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_dw_request">Edit
+                                                        </li>  
+                                                    </ul> 
                                             </li>
 
                                         </ul>
                                     </li>
                                 </div>
-                                
+
                                 <div class="row form-group">
                                     <li>
                                         <input type="checkbox" class="checkall" name="bonus" id="parent-bn">Bonus
                                         <ul>
                                             <li>
-                                                <input type="checkbox" class="checkul" id="parent-bn">Rebate Setting
+                                                <input type="checkbox" class="checkul" id="parent-promo">Promo Setting
                                                 <ul>
                                                     <li>
-                                                        <input type="checkbox" id="view_rebate_setting">View
+                                                        <input type="checkbox" id="view_promog">View
                                                     </li>
                                                     <li>
-                                                        <input type="checkbox" id="edit_rebate_setting">Edit
+                                                        <input type="checkbox" id="edit_promog">Edit
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li>
-                                                <input type="checkbox" class="checkul" id="parent-bn">Cash Back Setting
+                                                <input type="checkbox" class="checkul" id="parent-cashback">Cash Back Setting
                                                 <ul>
                                                     <li>
                                                         <input type="checkbox" id="view_cashback_setting">View
@@ -400,14 +380,10 @@
 
                                 </div>
                                 <div class="col-sm-4">
+
                                     <div class="row form-group">
-                                            <li>
-                                            <input type="checkbox" class="checkall" name="membermessage" id="member_msg">Member Messgae
-                                            </li>
-                                    </div>
-                                    <div class="row form-group">
-                                    <li>
-                                        <input type="checkbox" class="checkall" name="report" id="parent-rp">Report
+                                        <li>
+                                            <input type="checkbox" class="checkall" name="report" id="parent-rp">Report
                                             <ul>
                                                 <li>
                                                     <input type="checkbox" id="txn_history_report">Transaction History
@@ -416,20 +392,36 @@
                                                     <input type="checkbox" id="win_loss_report">Win Loss
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="win_loss_by_product_report">Win Loss By Prodcut
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="agent_credit_report">Agent Credit Report
-                                                </li>
-                                                <li>
                                                     <input type="checkbox" id="member_credit_report">Member Credit Report
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="member_referral_report">Member Referral Report
                                                 </li>
                                             </ul>
                                         </li>
                                     </div>
+
+
+                                    <div class="row form-group">
+                                            <li>
+                                            <input type="checkbox" class="checkall" name="membermessage" id="member_msg">Member Messgae
+                                            </li>
+                                    </div>
+                                    <div class="row form-group">
+                                        <li>
+                                            <input type="checkbox" class="checkall" name="report" id="parent-CMS">CMS
+                                            <ul>
+                                                <li>
+                                                    <input type="checkbox" id="cms_main_banner">Main Banner
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="cms_topbar_announcement">Top Bar Announcement
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="cms_popup">Pop Up
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </div>
+
+
                                     <div class="row form-group">
                                         <li>
                                             <input type="checkbox" class="checkall" name="settings" id="parent-s">{{ __('app.admins.admins_role.create.setting') }}
@@ -448,16 +440,6 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li>
-                                                    <input type="checkbox" class="checkul" id="parent-s">Default Agent
-                                                    <ul>
-                                                        <li>
-                                                            <input type="checkbox" id="view_default_agent">View
-                                                        </li>
-                                                        <li>
-                                                            <input type="checkbox" id="edit_default_agent">Edit
-                                                    </ul>
-                                                </li>
                                             </ul>
                                         </li>
                                     </div>
@@ -466,7 +448,7 @@
 
                             </div>
                         </ul>
-                </fieldset>       
+                </fieldset>        
             </div>
 
             <div class="card-footer">

@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
         Commands\GetNOEReport::class,
         Commands\GetPUSSYReport::class,
         Commands\GetKAYAReport::class,
+        Commands\CalculateMemberPromoTurnover::class,
+        Commands\CalculateCashback::class,
     ];
 
     /**
