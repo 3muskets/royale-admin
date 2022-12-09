@@ -114,6 +114,7 @@ function getMainData()
     data["start_date"] = $("#s_date1").val();
     data["end_date"] = $("#e_date1").val();
     data['result'] = result;
+    data["agent_id"] = $("#agent_id").val();
 
     $.ajax({
         type: "GET",
@@ -135,10 +136,10 @@ function loadMainData(containerId)
     $("#main-spinner").hide();
     $("#main-table").show();
 
-    console.log(mainData);
 
     var fields = [  
                 ["txn_id", locale['txn_id'],true,false]
+                ,["agent",'Agent',true,false]      
                 ,["username",locale['username'],true,false] 
                 ,["admin_id",locale['admin'],true,false] 
                 ,["debit",locale['debit'],true,true]
@@ -292,6 +293,7 @@ function resetMainData()
     $("#member_name").val("");
     $("#e_date, #e_date1").val("");
     $("#s_date, #s_date1").val("");
+    $("#agent_id").val("");
 
     document.getElementById("result_win").checked = false;
     document.getElementById("result_lose").checked = false;
@@ -373,6 +375,17 @@ function resetMainData()
 
                         </div>
 
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
                         <div class="col-sm-2">
 
                             <div class="form-group">

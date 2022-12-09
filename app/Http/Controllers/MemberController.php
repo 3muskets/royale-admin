@@ -44,6 +44,11 @@ class MemberController extends Controller
             $endLastDeposit = $request->input('elast_deposit');
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
+
+            $agentId = $request->input('agent_id');
+
+            if($agentId == null)
+                $agentId = '';
             
             if($startLastLogin == null)
                 $startLastLogin = '';
@@ -85,7 +90,7 @@ class MemberController extends Controller
             $sql = "
                     SELECT a.id, a.mobile, a.email, a.username, a.status, a.suspended,a.wallet_address, a.is_duplicate_ip,a.admin_id
                         , (a.created_at + INTERVAL 8 HOUR) 'created_at', (a.last_login + INTERVAL 8 HOUR) 'last_login'
-                        , a.last_ip, b.available, c.bank, c.acc_no, c.name
+                        , a.last_ip, b.available, c.bank, c.acc_no, c.name,e.username 'agent'
                         , d.unread_msg
                         , a.level_id
                     FROM member a
@@ -109,6 +114,7 @@ class MemberController extends Controller
                         AND (:start_date = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date1)
                         AND (:end_date = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date1)
                         AND (a.admin_id = :admin_id OR :admin_id1 = '')
+                        AND (a.admin_id = :agent_id OR :agent_id1 = '')
                     ";
 
             $params = 
@@ -128,6 +134,8 @@ class MemberController extends Controller
                 ,'end_date1' => $endDate
                 ,'admin_id'=> $adminId
                 ,'admin_id1'=> $adminId
+                ,'agent_id'=> $agentId
+                ,'agent_id1'=> $agentId
             ];
 
             $orderByAllow = ['id','username','created_at'];

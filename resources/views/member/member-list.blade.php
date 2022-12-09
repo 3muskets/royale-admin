@@ -125,6 +125,7 @@ function getMainData()
     data["elast_deposit"] = $("#elast_deposit1").val();
     data["start_date"] = $("#s_date1").val();
     data["end_date"] = $("#e_date1").val();
+    data["agent_id"] = $("#agent_id").val();
 
     $.ajax({
         type: "GET",
@@ -153,7 +154,8 @@ function loadMainData(containerId)
 
     //fields for the first row
     fields1 = [
-                    ["",locale['mainData.memberid'],true,false]                        
+                    ["",locale['mainData.memberid'],true,false]   
+                    ,["",'Agent',true,false]                     
                     ,["",locale['mainData.username'],true,false]
                     ,["",locale['mainData.level'],true,false]
                     ,["",locale['mainData.credit'],true,false]
@@ -186,7 +188,8 @@ function loadMainData(containerId)
                 ];
 
     var fields = [   
-                    ["id",locale['mainData.memberid'],true,false]                        
+                    ["id",locale['mainData.memberid'],true,false] 
+                    ,["agent",'Agent',true,false]                       
                     ,["username",locale['mainData.username'],true,false]
                     ,["level_id",locale['mainData.level'],true,false]
                     ,["available",locale['mainData.credit'],false,true]
@@ -546,6 +549,7 @@ function filterMainData()
 function resetMainData()
 {
     $("#f_username").val("");
+    $("#agent_id").val("");
     $("#slast_login, #slast_login1,#elast_login, #elast_login1").val("");
     $("#slast_deposit, #slast_deposit1,#elast_deposit, #elast_deposit1").val("");
     $("#s_date, #s_date1, #e_date, #e_date1").val("");
@@ -579,6 +583,17 @@ function resetMainData()
                 <div class="card-body">
 
                     <div class="row">
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
                         <div class="col-sm-2">
 
                             <div class="form-group">

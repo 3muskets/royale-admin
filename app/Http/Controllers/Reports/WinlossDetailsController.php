@@ -30,6 +30,14 @@ class WinLossDetailsController extends Controller
             $userLevel = $user->level;
             $adminId = $user->admin_id;
 
+
+
+            $agentId = $request->input('agent_id');
+
+            if($agentId == null)
+                $agentId = '';
+
+
             if($startDate == null)
                 $startDate = '';
             else
@@ -45,7 +53,7 @@ class WinLossDetailsController extends Controller
 
 
             $sql ="
-                    SELECT a.member_id 'id',a.username
+                    SELECT a.member_id 'id',a.username,b.username 'agent'
                         , SUM(a.total_wager) 'total_wager'
                         , SUM(a.total_turnover)'total_turnover'
                         , SUM(a.total_winloss) 'member_winloss'
@@ -53,6 +61,7 @@ class WinLossDetailsController extends Controller
                     (
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
                         FROM evo_debit a 
                         INNER JOIN evo_credit b
                             ON a.txn_id = b.txn_id
@@ -61,12 +70,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date OR '' = :start_date1)
                             AND (a.created_at <= :end_date OR '' = :end_date1)
                             AND (c.admin_id = :admin_id OR :admin_id1 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id OR :agent_id1 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id 
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
                         FROM ibc_debit a 
                         INNER JOIN ibc_credit b
                             ON a.txn_id = b.txn_id
@@ -75,12 +86,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date2 OR '' = :start_date3)
                             AND (a.created_at <= :end_date2 OR '' = :end_date3)
                             AND (c.admin_id = :admin_id2 OR :admin_id3 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id2 OR :agent_id3 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id 
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
                         FROM joker_debit a 
                         INNER JOIN joker_credit b
                             ON a.txn_id = b.txn_id
@@ -89,12 +102,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date4 OR '' = :start_date5)
                             AND (a.created_at <= :end_date4 OR '' = :end_date5)
                             AND (c.admin_id = :admin_id4 OR :admin_id5 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id4 OR :agent_id5 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
                         FROM noe_debit a 
                         INNER JOIN noe_credit b
                             ON a.txn_id = b.txn_id
@@ -103,12 +118,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date6 OR '' = :start_date7)
                             AND (a.created_at <= :end_date6 OR '' = :end_date7)
                             AND (c.admin_id = :admin_id6 OR :admin_id7 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id6 OR :agent_id7 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
                         FROM sa_debit a 
                         INNER JOIN sa_credit b
                             ON a.txn_id = b.txn_id
@@ -117,12 +134,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date8 OR '' = :start_date9)
                             AND (a.created_at <= :end_date8 OR '' = :end_date9)
                             AND (c.admin_id = :admin_id8 OR :admin_id9 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id8 OR :agent_id9 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.winloss) 'total_winloss' 
+                        ,c.admin_id
                         FROM sbo_debit a 
                         INNER JOIN sbo_credit b
                             ON a.txn_id = b.txn_id
@@ -131,12 +150,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date10 OR '' = :start_date11)
                             AND (a.created_at <= :end_date10 OR '' = :end_date11)
                             AND (c.admin_id = :admin_id10 OR :admin_id11 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id10 OR :agent_id11 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
                         FROM scr_debit a 
                         INNER JOIN scr_credit b
                             ON a.txn_id = b.txn_id
@@ -145,12 +166,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date12 OR '' = :start_date13)
                             AND (a.created_at <= :end_date12 OR '' = :end_date13)
                             AND (c.admin_id = :admin_id12 OR :admin_id13 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id12 OR :agent_id13 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL   
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
                         FROM ab_debit a 
                         INNER JOIN ab_credit b
                             ON a.txn_id = b.txn_id
@@ -159,12 +182,14 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date14 OR '' = :start_date15)
                             AND (a.created_at <= :end_date14 OR '' = :end_date15)
                             AND (c.admin_id = :admin_id14 OR :admin_id15 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id14 OR :agent_id15 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
                         UNION ALL
 
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
                         FROM pt_debit a 
                         INNER JOIN pt_credit b
                             ON a.txn_id = b.txn_id
@@ -173,11 +198,13 @@ class WinLossDetailsController extends Controller
                         WHERE (a.created_at >= :start_date16 OR '' = :start_date17)
                             AND (a.created_at <= :end_date16 OR '' = :end_date17)
                             AND (c.admin_id = :admin_id16 OR :admin_id17 = '')
-                        GROUP BY a.member_id,c.username  
+                            AND (c.admin_id = :agent_id16 OR :agent_id17 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
 
 
                     ) a
-                    GROUP BY a.member_id,a.username
+                    LEFT JOIN admin b ON a.admin_id = b.id
+                    GROUP BY a.member_id,a.username,b.username
 
                 ";
 
@@ -239,6 +266,26 @@ class WinLossDetailsController extends Controller
                     ,'admin_id15' => $adminId
                     ,'admin_id16' => $adminId
                     ,'admin_id17' => $adminId
+
+                    ,'agent_id' => $agentId
+                    ,'agent_id1' => $agentId
+                    ,'agent_id2' => $agentId
+                    ,'agent_id3' => $agentId
+                    ,'agent_id4' => $agentId
+                    ,'agent_id5' => $agentId
+                    ,'agent_id6' => $agentId
+                    ,'agent_id7' => $agentId
+                    ,'agent_id8' => $agentId
+                    ,'agent_id9' => $agentId
+                    ,'agent_id10' => $agentId
+                    ,'agent_id11' => $agentId
+                    ,'agent_id12' => $agentId
+                    ,'agent_id13' => $agentId              
+                    ,'agent_id14' => $agentId
+                    ,'agent_id15' => $agentId
+                    ,'agent_id16' => $agentId
+                    ,'agent_id17' => $agentId
+
                 ];
 
             $orderByAllow = ['member_id', 'total_wager', 'total_turnover', 'total_winloss'];
@@ -246,14 +293,257 @@ class WinLossDetailsController extends Controller
 
             $sql = Helper::appendOrderBy($sql, $orderBy, $orderType, $orderByAllow, $orderByDefault);
 
-            $data = Helper::paginateData($sql, $params, $page,200);
+            $data = Helper::paginateData($sql, $params, $page);
 
             foreach($data['results'] as $d)
             {
             }
 
-            //total
             $dataTotal = [];
+
+
+            //only need query to total again if multiple page
+            if($data['count'] > $data['page_size'])
+            {
+            $sql ="
+                    SELECT  SUM(a.total_wager) 'total_wager'
+                        , SUM(a.total_turnover)'total_turnover'
+                        , SUM(a.total_winloss) 'member_winloss'
+                    FROM 
+                    (
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM evo_debit a 
+                        INNER JOIN evo_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date OR '' = :start_date1)
+                            AND (a.created_at <= :end_date OR '' = :end_date1)
+                            AND (c.admin_id = :admin_id OR :admin_id1 = '')
+                            AND (c.admin_id = :agent_id OR :agent_id1 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id 
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM ibc_debit a 
+                        INNER JOIN ibc_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date2 OR '' = :start_date3)
+                            AND (a.created_at <= :end_date2 OR '' = :end_date3)
+                            AND (c.admin_id = :admin_id2 OR :admin_id3 = '')
+                            AND (c.admin_id = :agent_id2 OR :agent_id3 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id 
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM joker_debit a 
+                        INNER JOIN joker_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date4 OR '' = :start_date5)
+                            AND (a.created_at <= :end_date4 OR '' = :end_date5)
+                            AND (c.admin_id = :admin_id4 OR :admin_id5 = '')
+                            AND (c.admin_id = :agent_id4 OR :agent_id5 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
+                        FROM noe_debit a 
+                        INNER JOIN noe_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date6 OR '' = :start_date7)
+                            AND (a.created_at <= :end_date6 OR '' = :end_date7)
+                            AND (c.admin_id = :admin_id6 OR :admin_id7 = '')
+                            AND (c.admin_id = :agent_id6 OR :agent_id7 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM sa_debit a 
+                        INNER JOIN sa_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date8 OR '' = :start_date9)
+                            AND (a.created_at <= :end_date8 OR '' = :end_date9)
+                            AND (c.admin_id = :admin_id8 OR :admin_id9 = '')
+                            AND (c.admin_id = :agent_id8 OR :agent_id9 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.winloss) 'total_winloss' 
+                        ,c.admin_id
+                        FROM sbo_debit a 
+                        INNER JOIN sbo_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date10 OR '' = :start_date11)
+                            AND (a.created_at <= :end_date10 OR '' = :end_date11)
+                            AND (c.admin_id = :admin_id10 OR :admin_id11 = '')
+                            AND (c.admin_id = :agent_id10 OR :agent_id11 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
+                        FROM scr_debit a 
+                        INNER JOIN scr_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date12 OR '' = :start_date13)
+                            AND (a.created_at <= :end_date12 OR '' = :end_date13)
+                            AND (c.admin_id = :admin_id12 OR :admin_id13 = '')
+                            AND (c.admin_id = :agent_id12 OR :agent_id13 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL   
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
+                        FROM ab_debit a 
+                        INNER JOIN ab_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date14 OR '' = :start_date15)
+                            AND (a.created_at <= :end_date14 OR '' = :end_date15)
+                            AND (c.admin_id = :admin_id14 OR :admin_id15 = '')
+                            AND (c.admin_id = :agent_id14 OR :agent_id15 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+                        UNION ALL
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM pt_debit a 
+                        INNER JOIN pt_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date16 OR '' = :start_date17)
+                            AND (a.created_at <= :end_date16 OR '' = :end_date17)
+                            AND (c.admin_id = :admin_id16 OR :admin_id17 = '')
+                            AND (c.admin_id = :agent_id16 OR :agent_id17 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+
+                    ) a
+                    LEFT JOIN admin b ON a.admin_id = b.id
+
+                ";
+
+                $params = 
+                [
+                    'start_date' => $startDate
+                    ,'start_date1' => $startDate
+                    ,'start_date2' => $startDate
+                    ,'start_date3' => $startDate
+                    ,'start_date4' => $startDate
+                    ,'start_date5' => $startDate
+                    ,'start_date6' => $startDate
+                    ,'start_date7' => $startDate
+                    ,'start_date8' => $startDate
+                    ,'start_date9' => $startDate
+                    ,'start_date10' => $startDate
+                    ,'start_date11' => $startDate
+                    ,'start_date12' => $startDate
+                    ,'start_date13' => $startDate
+                    ,'start_date14' => $startDate
+                    ,'start_date15' => $startDate
+                    ,'start_date16' => $startDate
+                    ,'start_date17' => $startDate
+
+                    ,'end_date' => $endDate
+                    ,'end_date1' => $endDate
+                    ,'end_date2' => $endDate
+                    ,'end_date3' => $endDate
+                    ,'end_date4' => $endDate
+                    ,'end_date5' => $endDate
+                    ,'end_date6' => $endDate
+                    ,'end_date7' => $endDate
+                    ,'end_date8' => $endDate
+                    ,'end_date9' => $endDate
+                    ,'end_date10' => $endDate
+                    ,'end_date11' => $endDate
+                    ,'end_date12' => $endDate
+                    ,'end_date13' => $endDate
+                    ,'end_date14' => $endDate
+                    ,'end_date15' => $endDate
+                    ,'end_date16' => $endDate
+                    ,'end_date17' => $endDate
+
+                    ,'admin_id' => $adminId
+                    ,'admin_id1' => $adminId
+                    ,'admin_id2' => $adminId
+                    ,'admin_id3' => $adminId
+                    ,'admin_id4' => $adminId
+                    ,'admin_id5' => $adminId
+                    ,'admin_id6' => $adminId
+                    ,'admin_id7' => $adminId
+                    ,'admin_id8' => $adminId
+                    ,'admin_id9' => $adminId
+                    ,'admin_id10' => $adminId
+                    ,'admin_id11' => $adminId
+                    ,'admin_id12' => $adminId
+                    ,'admin_id13' => $adminId              
+                    ,'admin_id14' => $adminId
+                    ,'admin_id15' => $adminId
+                    ,'admin_id16' => $adminId
+                    ,'admin_id17' => $adminId
+
+                    ,'agent_id' => $agentId
+                    ,'agent_id1' => $agentId
+                    ,'agent_id2' => $agentId
+                    ,'agent_id3' => $agentId
+                    ,'agent_id4' => $agentId
+                    ,'agent_id5' => $agentId
+                    ,'agent_id6' => $agentId
+                    ,'agent_id7' => $agentId
+                    ,'agent_id8' => $agentId
+                    ,'agent_id9' => $agentId
+                    ,'agent_id10' => $agentId
+                    ,'agent_id11' => $agentId
+                    ,'agent_id12' => $agentId
+                    ,'agent_id13' => $agentId              
+                    ,'agent_id14' => $agentId
+                    ,'agent_id15' => $agentId
+                    ,'agent_id16' => $agentId
+                    ,'agent_id17' => $agentId
+
+                ];
+
+
+                $dataTotal = DB::select($sql,$params);
+
+
+            }
             
             return Response::make(json_encode([$data,$dataTotal]), 200);
         } 

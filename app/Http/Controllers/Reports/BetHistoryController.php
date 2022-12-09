@@ -18,7 +18,6 @@ class BetHistoryController extends Controller
     {
         try
         {
-
             $page = $request->input('page');
             $orderBy = $request->input('order_by');
             $orderType = $request->input('order_type');
@@ -31,6 +30,12 @@ class BetHistoryController extends Controller
             $result = $request->input('result');
 
             $prdId = $request->input('prd_id');
+
+
+            $agentId = $request->input('agent_id');
+
+            if($agentId == null)
+                $agentId = '';
 
             $user = Auth::user();
             $adminId = $user->admin_id;
@@ -52,7 +57,7 @@ class BetHistoryController extends Controller
 
 
             $sql = "
-                    SELECT a.*
+                    SELECT a.*,b.username 'agent'
                     FROM 
                     (
                         SELECT '1' AS 'prd_id',a.txn_id,a.member_id, c.username 'username'
@@ -76,6 +81,7 @@ class BetHistoryController extends Controller
                             AND (:start_date = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date1)
                             AND (:end_date = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date1)
                             AND (c.admin_id = :admin_id OR :admin_id1 = '')
+                            AND (c.admin_id = :agent_id OR :agent_id1 = '')
 
                         UNION ALL
 
@@ -100,6 +106,7 @@ class BetHistoryController extends Controller
                             AND (:start_date2 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date3)
                             AND (:end_date2 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date3)
                             AND (c.admin_id = :admin_id2 OR :admin_id3 = '')
+                            AND (c.admin_id = :agent_id2 OR :agent_id3 = '')
 
 
 
@@ -126,6 +133,7 @@ class BetHistoryController extends Controller
                             AND (:start_date4 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date5)
                             AND (:end_date4 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date5)
                             AND (c.admin_id = :admin_id4 OR :admin_id5 = '')
+                            AND (c.admin_id = :agent_id4 OR :agent_id5 = '')
 
 
 
@@ -152,6 +160,7 @@ class BetHistoryController extends Controller
                             AND (:start_date6 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date7)
                             AND (:end_date6 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date7)
                             AND (c.admin_id = :admin_id6 OR :admin_id7 = '')
+                            AND (c.admin_id = :agent_id6 OR :agent_id7 = '')
 
 
                         UNION ALL
@@ -177,6 +186,7 @@ class BetHistoryController extends Controller
                             AND (:start_date8 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date9)
                             AND (:end_date8 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date9)
                             AND (c.admin_id = :admin_id8 OR :admin_id9 = '')
+                            AND (c.admin_id = :agent_id8 OR :agent_id9 = '')
 
 
                         UNION ALL
@@ -202,6 +212,7 @@ class BetHistoryController extends Controller
                             AND (:start_date10 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date11)
                             AND (:end_date10 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date11)
                             AND (c.admin_id = :admin_id10 OR :admin_id11 = '')
+                            AND (c.admin_id = :agent_id10 OR :agent_id11 = '')
 
 
                         UNION ALL
@@ -227,6 +238,7 @@ class BetHistoryController extends Controller
                             AND (:start_date12 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date13)
                             AND (:end_date12 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date13)
                             AND (c.admin_id = :admin_id12 OR :admin_id13 = '')
+                            AND (c.admin_id = :agent_id12 OR :agent_id13 = '')
 
                         UNION ALL
 
@@ -251,6 +263,7 @@ class BetHistoryController extends Controller
                             AND (:start_date14 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date15)
                             AND (:end_date14 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date15)
                             AND (c.admin_id = :admin_id14 OR :admin_id15 = '')
+                            AND (c.admin_id = :agent_id14 OR :agent_id15 = '')
 
                         UNION ALL
 
@@ -275,9 +288,11 @@ class BetHistoryController extends Controller
                             AND (:start_date16 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date17)
                             AND (:end_date16 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date17)
                             AND (c.admin_id = :admin_id16 OR :admin_id17 = '')
+                            AND (c.admin_id = :agent_id16 OR :agent_id17 = '')
 
 
                     ) a
+                    LEFT JOIN admin b ON a.admin_id = b.id
                     
                     WHERE a.bet_result IN (?) AND a.prd_id = ?
 
@@ -306,7 +321,8 @@ class BetHistoryController extends Controller
             $params['end_date1'] = $endDate;
             $params['admin_id'] = $adminId;
             $params['admin_id1'] = $adminId;
-
+            $params['agent_id'] = $agentId;
+            $params['agent_id1'] = $agentId;
 
             $params['txn_id1'] = '%'.$txnId.'%';
             $params['member_name1'] = '%'.$memberName.'%';
@@ -316,6 +332,8 @@ class BetHistoryController extends Controller
             $params['end_date3'] = $endDate;
             $params['admin_id2'] = $adminId;
             $params['admin_id3'] = $adminId;
+            $params['agent_id2'] = $agentId;
+            $params['agent_id3'] = $agentId;
 
             $params['txn_id2'] = '%'.$txnId.'%';
             $params['member_name2'] = '%'.$memberName.'%';
@@ -325,6 +343,9 @@ class BetHistoryController extends Controller
             $params['end_date5'] = $endDate;
             $params['admin_id4'] = $adminId;
             $params['admin_id5'] = $adminId;
+            $params['agent_id4'] = $agentId;
+            $params['agent_id5'] = $agentId;
+
 
             $params['txn_id3'] = '%'.$txnId.'%';
             $params['member_name3'] = '%'.$memberName.'%';
@@ -334,6 +355,8 @@ class BetHistoryController extends Controller
             $params['end_date7'] = $endDate;
             $params['admin_id6'] = $adminId;
             $params['admin_id7'] = $adminId;
+            $params['agent_id6'] = $agentId;
+            $params['agent_id7'] = $agentId;
 
             $params['txn_id4'] = '%'.$txnId.'%';
             $params['member_name4'] = '%'.$memberName.'%';
@@ -343,6 +366,9 @@ class BetHistoryController extends Controller
             $params['end_date9'] = $endDate;
             $params['admin_id8'] = $adminId;
             $params['admin_id9'] = $adminId;
+            $params['agent_id8'] = $agentId;
+            $params['agent_id9'] = $agentId;
+
 
             $params['txn_id5'] = '%'.$txnId.'%';
             $params['member_name5'] = '%'.$memberName.'%';
@@ -352,7 +378,8 @@ class BetHistoryController extends Controller
             $params['end_date11'] = $endDate;
             $params['admin_id10'] = $adminId;
             $params['admin_id11'] = $adminId;
-
+            $params['agent_id10'] = $agentId;
+            $params['agent_id11'] = $agentId;
 
             $params['txn_id6'] = '%'.$txnId.'%';
             $params['member_name6'] = '%'.$memberName.'%';
@@ -362,8 +389,8 @@ class BetHistoryController extends Controller
             $params['end_date13'] = $endDate;
             $params['admin_id12'] = $adminId;
             $params['admin_id13'] = $adminId;
-
-
+            $params['agent_id12'] = $agentId;
+            $params['agent_id13'] = $agentId;
 
             $params['txn_id7'] = '%'.$txnId.'%';
             $params['member_name7'] = '%'.$memberName.'%';
@@ -373,7 +400,8 @@ class BetHistoryController extends Controller
             $params['end_date15'] = $endDate;
             $params['admin_id14'] = $adminId;
             $params['admin_id15'] = $adminId;
-
+            $params['agent_id14'] = $agentId;
+            $params['agent_id15'] = $agentId;
 
             $params['txn_id8'] = '%'.$txnId.'%';
             $params['member_name8'] = '%'.$memberName.'%';
@@ -383,7 +411,8 @@ class BetHistoryController extends Controller
             $params['end_date17'] = $endDate;
             $params['admin_id16'] = $adminId;
             $params['admin_id17'] = $adminId;
-
+            $params['agent_id16'] = $agentId;
+            $params['agent_id17'] = $agentId;
 
             $orderByAllow = ['txn_id','debit','credit','username','timestamp','bet_result','game_id'];
             $orderByDefault = 'timestamp desc';

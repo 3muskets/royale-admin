@@ -138,6 +138,7 @@ function getMainData()
     data["prd_id"] = $("#prd_id").val();
     data["start_date"] = s_date;
     data["end_date"] = e_date;
+    data["agent_id"] = $("#agent_id").val();
 
 
     $.ajax({
@@ -169,8 +170,9 @@ function loadMainData(containerId)
 
     console.log(mainData);
 
-    var fields = [  
-                ["username", locale['username'],true,false]
+    var fields = [
+                ["agent",'Agent',true,false]   
+                ,["username", locale['username'],true,false]
                 ,["total_wager",locale['total_wager'],true,true]
                 ,["total_turnover",locale['turnover'],true,true]
                 ,["member_winloss",locale['win_loss'],true,true]
@@ -286,7 +288,7 @@ function resetMainData()
     $("#username").val("");
     $("#e_date, #e_date1").val("");
     $("#s_date, #s_date1").val("");
-
+    $("#agent_id").val("");
     filterMainData();
 }
 
@@ -347,7 +349,26 @@ function resetMainData()
                 <div class="card-body">
 
                     <div class="row">
-                        
+
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
+  
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name">{{ __('app.reports.winloss.filter.username') }}</label>
+                                <input type="text" class="form-control" id="username" autocomplete="">
+                            </div>
+                        </div>
+
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="name">{{ __('common.filter.fromdate') }}</label>
@@ -363,13 +384,6 @@ function resetMainData()
                                 <input type="hidden" name="e_date1" id="e_date1">
                             </div>
 
-                        </div>
-
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="name">{{ __('app.reports.winloss.filter.username') }}</label>
-                                <input type="text" class="form-control" id="username" autocomplete="">
-                            </div>
                         </div>
 
                     </div>

@@ -61,6 +61,7 @@ function getMainData()
     data["end_date"] = $("#e_date1").val();
     data['username'] = $("#username").val();
     data["tier4"] = $("#f_tier4").val();
+    data["agent_id"] = $("#agent_id").val();
 
     $.ajax({
         type: "GET",
@@ -84,7 +85,9 @@ function loadMainData(containerId)
 
     var fields = [  
                 ["txn_id", locale['txn_id'],true,false]
-                ,["member",locale['member'],false,false]        
+                ,["agent",'Agent',false,false] 
+                ,["member",locale['member'],false,false]   
+                ,["txn_type_desc",'Transaction Type',false,false]        
                 ,["type_details",locale['type'],false,false]
                 ,["credit_before",locale['credit_before'],false,true]     
                 ,["transfer_in",locale['transfer_in'],false,true]
@@ -156,6 +159,7 @@ function resetMainData()
     $("#e_date, #e_date1").val("");
     $("#s_date, #s_date1").val("");
     $("#username, #f_tier4").val("");
+    $("#agent_id").val("");
 
     filterMainData();
 }
@@ -208,13 +212,17 @@ function resetMainData()
                             </div>
 
                         </div>
-<!-- 
-                        <div class="col-sm-2" id="fg_tier4">
-                            <div class="form-group">
-                                <label for="name">{{ __('app.banking.dw.filter.agent') }}</label>
-                                <input type="text" class="form-control" id="f_tier4" autocomplete="">
-                            </div>
-                        </div> -->
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
 
                         <div class="col-sm-2">
                             <div class="form-group">

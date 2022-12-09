@@ -107,6 +107,7 @@ function getMainData()
     data["start_date"] = $("#s_date1").val();
     data["end_date"] = $("#e_date1").val();
     data["type"] = $("#f_type").val();
+    data["agent_id"] = $("#agent_id").val();
 
     $.ajax({
         type: "GET",
@@ -138,6 +139,7 @@ function loadMainData(containerId)
 
     var fields = [   
                     ["id",locale['mainData.id'],true,false]
+                    ,["agent",'Agent',true,false]      
                     ,["username",locale['mainData.username'],true,false]                        
                     ,["type_text",locale['mainData.type'],false,false]
                     ,["amount",locale['mainData.amount'],true,true]
@@ -175,10 +177,6 @@ function loadMainData(containerId)
         var fieldDuplicateIp = utils.getDataTableFieldIdx("is_duplicate_ip", fields);
         var fieldDuplicateBank = utils.getDataTableFieldIdx("is_duplicate_bank", fields);
 
-/*        if(auth.getUserLevel() == 3 || auth.getUserLevel() == 1  || auth.getUserLevel() == 0)
-        {
-            var fieldActions = utils.getDataTableFieldIdx("",fields);
-        }*/
 
         for (var i = 1, row; row = table.rows[i]; i++) 
         {   
@@ -257,74 +255,6 @@ function loadMainData(containerId)
             }
 
 
-/*            if(auth.getUserLevel() == 3 || auth.getUserLevel() == 1 || auth.getUserLevel() == 0)
-            {
-
-
-                if(status != 'n')
-                {
-                    row.cells[fieldActions].innerHTML = '';
-
-                }
-                else
-                {
-
-                    if (auth.getUserLevel() == 3 || auth.getUserLevel() == 0) 
-                    {
-                        if (paymentType != 'x') 
-                        {
-                            var displayButton = true;
-                        }
-                        else
-                        {
-                            var displayButton = false;
-                        }
-                    }
-
-                    if (auth.getUserLevel() == 1) 
-                    {   
-
-
-                        if (paymentType == 'x') 
-                        {
-                            var displayButton = true;
-                        }
-                        else
-                        {
-                            var displayButton = false;
-                        }
-                    }
-
-
-
-                    if (displayButton) 
-                    {
-                        var btnApprove = document.createElement("BUTTON");
-                        btnApprove.innerHTML = "{!! __('app.banking.dw.actions.approve') !!}";
-                        btnApprove.className = "btn btn-sm btn-primary";
-                        btnApprove.onclick = doApprove;
-                        btnApprove.rowId = i;
-                        btnApprove.style.margin = "0 15px 0 0";
-                        btnApprove.value = "1";
-
-                        var btnReject = document.createElement("BUTTON");
-                        btnReject.innerHTML = "{!! __('app.banking.dw.actions.reject') !!}";
-                        btnReject.className = "btn btn-sm btn-primary";
-                        btnReject.onclick = doReject;
-                        btnReject.rowId = i;
-                        btnReject.style.margin = "0 15px 0 0";
-                        btnReject.value = "2";
-
-                        row.cells[fieldActions].innerHTML = '';
-                        row.cells[fieldActions].appendChild(btnApprove);
-                        row.cells[fieldActions].appendChild(btnReject);
-                    }
-                    else
-                    {
-                        row.cells[fieldActions].innerHTML = '';
-                    }
-                }
-            }*/
         }
 
         var sumFields = [      
@@ -723,6 +653,7 @@ function resetMainData()
     $("#f_type").val("");
     $("#e_date, #e_date1").val("");
     $("#s_date, #s_date1").val("");
+    $("#agent_id").val("");
 
     filterMainData();
 }
@@ -813,6 +744,27 @@ function resetMainData()
                 <div class="card-body">
 
                     <div class="row">
+
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
+
+                        <div class="col-sm-2">
+
+                            <div class="form-group">
+                                <label for="member">{{ __('app.banking.dw.filter.member') }}</label>
+                                <input type="text" class="form-control" id="f_member" placeholder="" autocomplete="">
+                            </div>
+
+                        </div>
                         <div class="col-sm-2">
 
                             <div class="form-group">
@@ -832,14 +784,7 @@ function resetMainData()
 
                         </div>
 
-                        <div class="col-sm-2">
 
-                            <div class="form-group">
-                                <label for="member">{{ __('app.banking.dw.filter.member') }}</label>
-                                <input type="text" class="form-control" id="f_member" placeholder="" autocomplete="">
-                            </div>
-
-                        </div>
                         <div class="col-sm-2">
 
                             <div class="form-group">

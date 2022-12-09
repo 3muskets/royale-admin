@@ -48,12 +48,12 @@ class MemberDWController extends Controller
 
             //get tier 1,2,3 pending request count
             $db = DB::select("
-                SELECT COUNT(a.*) 'count'
+                SELECT COUNT(a.id) 'count'
                 FROM member_dw a
                 LEFT JOIN member b
                 ON a.member_id = b.id
                 WHERE a.status = 'n'
-                AND (b.admin_id = ? OR '' = '' )
+                AND (b.admin_id = ? OR ? = '' )
                 ",[$tierId,$tierId]
             );
 
@@ -82,6 +82,12 @@ class MemberDWController extends Controller
             $type = $request->input('type');
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
+
+            $agentId = $request->input('agent_id');
+
+            if($agentId == null)
+                $agentId = '';
+
 
             if(!$status)
                 $status = '';
@@ -115,19 +121,21 @@ class MemberDWController extends Controller
                         ,b.bank,b.payment_type,b.payment_gateway_status,b.ref_id,b.member_name,b.member_bank_acc, b.dw_date, b.image
                         ,(b.created_at + INTERVAL 8 HOUR) 'created_at',(b.updated_at + INTERVAL 8 HOUR) 'updated_at'
                         ,d.bank 'admin_bank', d.name 'admin_acc_name' , d.acc_no 'admin_acc_no', f.username 'confirm_by'
-                        ,g.promo_name
+                        ,g.promo_name,h.username 'agent'
                     FROM member a
                     INNER JOIN member_dw b ON a.id = b.member_id
                     LEFT JOIN admin_bank_info d ON d.id = b.admin_bank_id
-                    LEFT JOIN member_credit_txn e ON b.id = e.dw_id
+                    LEFT JOIN member_credit_txn e ON b.id = e.dw_id AND e.txn_type = 1
                     LEFT JOIN admin f ON f.id = e.credit_by
                     LEFT JOIN promo_setting g ON b.promo_id = g.promo_id 
+                    LEFT JOIN admin h ON a.admin_id = h.id 
                     WHERE a.username LIKE ?
                         AND (b.status = ? OR ? = '')
                         AND (b.type = ? OR ? = '')
                         AND (? = '' OR (b.created_at + INTERVAL 8 HOUR) >= ?)
                         AND (? = '' OR (b.created_at + INTERVAL 8 HOUR) <= ?)
                         AND b.payment_type != 'c'
+                        AND (a.admin_id = ? OR ? = '')
                         AND (a.admin_id = ? OR ? = '')
                     ";
 
@@ -143,6 +151,9 @@ class MemberDWController extends Controller
                         ,$endDate  
                         ,$tierId  
                         ,$tierId  
+                        ,$agentId  
+                        ,$agentId  
+
                     ];
 
             $pdo = Helper::prepareWhereIn($sql,$params);

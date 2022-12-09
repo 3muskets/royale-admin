@@ -34,7 +34,7 @@ $(document).ready(function()
 function prepareLocale()
 {
     locale['mainData.username'] = "{!! __('app.member.credit.username') !!}";
-    locale['mainData.agent'] = "Company/Agent";
+    locale['mainData.agent'] = "Agent";
     locale['mainData.given'] = "{!! __('app.member.credit.total_credit') !!}";
     locale['mainData.credit'] = "{!! __('app.member.credit.credit') !!}";
     locale['mainData.action'] = "{!! __('app.member.credit.action') !!}";
@@ -68,6 +68,7 @@ function getMainData()
 
     data["username"] = $("#f_username").val();
     data["tier4"] = $("#f_tier4").val();
+    data["agent_id"] = $("#agent_id").val();
 
     $.ajax({
         type: "GET",
@@ -97,6 +98,7 @@ function loadMainData(containerId)
     var fields = [  
                                       
                     ["username",locale['mainData.username'],true,false]
+                    ,["agent",locale['mainData.agent'],true,false]   
                     // ,["check",locale['tooltip.check'],false,false]                 
                     ,["available",locale['mainData.credit'],false,true]
                     ,["",locale['mainData.action'],false,false]
@@ -393,7 +395,7 @@ function filterMainData()
 function resetMainData()
 {
     $("#f_username, #f_tier4").val("");
-
+    $("#agent_id").val("");
     filterMainData();
 }
 </script>
@@ -422,12 +424,17 @@ function resetMainData()
                 <div class="card-body">
 
                     <div class="row">
-<!--                         <div class="col-sm-2" id="fg_tier4">
-                            <div class="form-group">
-                                <label for="name">{{ __('app.banking.dw.filter.agent') }}</label>
-                                <input type="text" class="form-control" id="f_tier4" autocomplete="">
-                            </div>
-                        </div> -->
+                        @if (Auth::user()->admin_id == 1)
+                        <div class="col-sm-2">
+                            <label>Agent</label>
+                            <select id="agent_id" name="agent_id" class="form-control">
+                                <option value="">All</option>
+                                <option value="2">Agent 1</option>
+                                <option value="3">Agent 2</option>
+                            
+                            </select>
+                        </div>
+                        @endif
 
                         <div class="col-sm-2">
 

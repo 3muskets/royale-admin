@@ -154,12 +154,18 @@ class CreditController extends Controller
             $id = $user->admin_id;
             $level = $user->level;
 
+            $agentId = $request->input('agent_id');
+
             if($id == 1)
                 $id = '';
 
+            if($agentId == null)
+                $agentId = '';
+            
+
             $sql = "
                     SELECT a.id, a.username 'username', b.available 'available'
-                    , d.level
+                    , d.level ,d.username 'agent'
                     FROM member a
                     LEFT JOIN member_credit b
                         ON a.id = b.member_id
@@ -167,6 +173,7 @@ class CreditController extends Controller
                            ON a.admin_id = d.id
                     WHERE a.username LIKE :username
                     AND (a.admin_id = :id OR :id2 = '')
+                    AND (a.admin_id = :agentId OR :agentId1 = '')
                     ";
 
             $params = 
@@ -174,7 +181,8 @@ class CreditController extends Controller
                 'username' => '%' . $username . '%'
                 ,'id' => $id
                 ,'id2' => $id
-
+                ,'agentId' => $agentId
+                ,'agentId1' => $agentId
             ];
 
             $orderByAllow = ['username'];

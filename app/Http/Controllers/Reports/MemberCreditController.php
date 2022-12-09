@@ -29,6 +29,11 @@ class MemberCreditController extends Controller
             $user = Auth::user();
             $userLevel = $user->level;
             $adminId = $user->admin_id;
+            $agentId = $request->input('agent_id');
+
+            if($agentId == null)
+                $agentId = '';
+
 
             if($adminId == 1)
                 $adminId = '';
@@ -45,7 +50,7 @@ class MemberCreditController extends Controller
 
     
             $sql = "
-                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator',f.payment_type
+                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator',f.payment_type,g.username 'agent',txn_type
                     FROM member_credit_txn a
                     LEFT JOIN member b 
                     ON a.member_id = b.id
@@ -53,10 +58,13 @@ class MemberCreditController extends Controller
                     ON a.credit_by = c.id
                     LEFT JOIN member_dw f
                     ON a.dw_id = f.id
+                    LEFT JOIN admin g
+                    ON b.admin_id = g.id
                     WHERE  b.username LIKE :username  
                         AND (:start_date = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date1)
                         AND (:end_date = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date1)
                         AND (b.admin_id = :admin_id OR :admin_id1 = '')
+                        AND (b.admin_id = :agent_id OR :agent_id1 = '')
                 ";
 
             $params = 
@@ -68,15 +76,20 @@ class MemberCreditController extends Controller
                 ,'username' => '%' . $username . '%'           
                 ,'admin_id' => $adminId
                 ,'admin_id1' => $adminId 
+                ,'agent_id' => $agentId
+                ,'agent_id1' => $agentId 
+
             ];
             
             $orderByAllow = ['txn_id','created_at'];
-            $orderByDefault = 'created_at desc';
+            $orderByDefault = 'created_at desc,txn_id desc';
 
             $sql = Helper::appendOrderBy($sql, $orderBy, $orderType, $orderByAllow, $orderByDefault);
             $data = Helper::paginateData($sql, $params, $page);
 
             $arrType = self::getOptionsType();
+
+            $aryTxnType = self::getOptionsTxnType();
 
             foreach($data['results'] as $d)
             {
@@ -99,6 +112,12 @@ class MemberCreditController extends Controller
                 }
 
                 $d->credit_after = $d->credit_before + $d->amount;
+
+
+                $d->txn_type_desc = Helper::getOptionsValue($aryTxnType, $d->txn_type);
+
+
+
             }
             
             return Response::make(json_encode($data), 200);
@@ -129,5 +148,21 @@ class MemberCreditController extends Controller
             ,['f', __('option.member.dw.f2f')]
         ];
     }
+
+    public static function getOptionsTxnType()
+    {
+        return  [
+                ['1',__('Deposit')]
+                ,['2',__('Withdraw')]
+                ,['3',__('Transfer')]
+                ,['4',__('Promotion')]
+                ,['5',__('Referral')]
+                ,['6',__('Bonus')]
+                ,['7',__('Cashback')]
+                ,['8',__('Adjustment')]
+            ];
+    }
+
+
 
 }
