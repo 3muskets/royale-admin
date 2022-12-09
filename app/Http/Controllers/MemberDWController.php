@@ -151,7 +151,8 @@ class MemberDWController extends Controller
                         ,$endDate  
                         ,$tierId  
                         ,$tierId  
-
+                        ,$agentId
+                        ,$agentId
 
                     ];
 
