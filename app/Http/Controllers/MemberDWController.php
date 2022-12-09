@@ -259,7 +259,7 @@ class MemberDWController extends Controller
     public static function approveDeposit(Request $request)
     {
         DB::beginTransaction();
-        
+
 
         try
         {
@@ -324,14 +324,12 @@ class MemberDWController extends Controller
             $typeTo = 2;
             $remarkFrom = 'Member Add Credit, From ADMIN';
 
-            $uplineCode = 'ADM1';
-
             if($promoId != '')
-                $remarkFrom = 'Member Add Credit, From '.$uplineCode.'(With Promotion Bonus)';
+                $remarkFrom = 'Member Add Credit, From ADM1';
 
             $sql = "
-                    INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,dw_id,remark)
-                    VALUES  (:refid,:type,:member,:before,:amount,:by,:dwId,:remark)
+                    INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,dw_id,remark,txn_type)
+                    VALUES  (:refid,:type,:member,:before,:amount,:by,:dwId,:remark,:txnType)
                     ";
 
             $params = [
@@ -340,10 +338,11 @@ class MemberDWController extends Controller
                     ,'type' => $typeTo
                     ,'member' => $memberId
                     ,'before' => $beforeFrom
-                    ,'amount' => $amount
+                    ,'amount' => $amount-$promoAmt
                     ,'by' => $userId
                     ,'dwId' => $txnId
                     ,'remark' => $remarkFrom
+                    ,'txnType' => 1
 
                 ];
 
@@ -371,8 +370,70 @@ class MemberDWController extends Controller
                 DB::insert($sql,$params);
             }
 
+            //NEW REFID
+            $refId = Helper::prepareRefId(2);
+
+            if($promoId != '')
+            {
+                $remarkFrom = 'Member Add Credit, Promotion Bonus';
+            }
+
+            //INSERT TXN FOR PROMOTION
+            $sql = "
+                    INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,dw_id,txn_type,remark)
+                    VALUES  (:refid,:type,:member,:before,:amount,:by,:dwId,:txnType,:remark)
+                    ";
+
+            $params = [
+
+                    'refid' => $refId
+                    ,'type' => $typeTo
+                    ,'member' => $memberId
+                    ,'before' => $beforeFrom+$amount-$promoAmt
+                    ,'amount' => $promoAmt
+                    ,'by' => $userId
+                    ,'dwId' => $txnId
+                    ,'txnType' => 4
+                    ,'remark' => $remarkFrom
+
+                ];
+
+
+             DB::insert($sql,$params);
+
+
+
+            
 
             $balance = $balance + $amount;
+
+
+
+            $db = DB::select('SELECT sum(amount) "ttl_deposit" FROM member_credit_txn WHERE member_id = ? AND txn_type = 1',[$memberId]);
+
+
+            if(sizeOf($db) > 0)
+            {
+                $ttlDepositAmt = $db[0]->ttl_deposit;
+            }
+
+
+            $select = DB::select('SELECT max(id) "level_id" FROM member_lvl WHERE min_deposit_amt <= ?',[$ttlDepositAmt]);
+
+
+            if(sizeof($select) > 0)
+            {
+                $level = $select[0]->level_id;
+            }
+
+
+            DB::update("
+                UPDATE member
+                SET level_id = ?
+                WHERE id = ?"
+                ,[$level
+                ,$memberId]
+                );
 
 
             $subject = "Deposit Approved";
@@ -392,6 +453,7 @@ class MemberDWController extends Controller
                     ,[$dwRemark,$txnId]);
 
             $txnUpdated = $db;
+
 
             if(!$txnUpdated)
             {
@@ -497,8 +559,8 @@ class MemberDWController extends Controller
 
 
             $sql = "
-                    INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,dw_id,remark)
-                    VALUES  (:refid,:type,:member,:before,:amount,:by,:dwId,:remark)
+                    INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,dw_id,remark,txn_type)
+                    VALUES  (:refid,:type,:member,:before,:amount,:by,:dwId,:remark,:txnType)
                     ";
 
             $params = [
@@ -511,6 +573,7 @@ class MemberDWController extends Controller
                     ,'by' => $userId
                     ,'dwId' => $txnId
                     ,'remark' => $remarkFrom
+                    ,'txnType' => 2
 
                 ];
 

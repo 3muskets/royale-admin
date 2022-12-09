@@ -211,6 +211,11 @@ class CreditController extends Controller
 
             $adjType = $request->input('adj_type'); //1-add 2-deduct
 
+            if($actionType == 1)
+                $txnType = 1;
+            else if($actionType == 2)
+                $txnType = 2;
+
             $user = Auth::user();
             $userId = $user->id;
 
@@ -247,12 +252,14 @@ class CreditController extends Controller
             {
                 $isAdjustment = 1;
                 $actionType = 1;
+                $txnType = 8;
             }
             //adjustment deduct = withdraw
             else if($adjType == 2 && $actionType == 3)
             {
                 $isAdjustment = 1;
                 $actionType = 2;
+                $txnType = 8;
             }
 
             $db = DB::select("SELECT a.id, b.username, a.admin_id, IFNULL(b.level,0) 'level' 
@@ -291,6 +298,7 @@ class CreditController extends Controller
 
                 $beforeFrom = $availableCredit; //member
                 $remarkFrom = 'Member Add Credit, From '.$uplineCode;
+
             }
             else if($actionType == '2')
             {
@@ -302,6 +310,7 @@ class CreditController extends Controller
 
 
                 $amount = -$amount;
+    
             }
 
             if($remarks != '')
@@ -320,9 +329,11 @@ class CreditController extends Controller
             }
 
 
+
+
             $memberTxnSql = "
-                            INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,remark,is_adjustment)
-                            VALUES  (:refid,:type,:member,:before,:amount,:by,:remark,:isAdjustment)
+                            INSERT INTO member_credit_txn (ref_id,type,member_id,credit_before,amount,credit_by,remark,is_adjustment,txn_type)
+                            VALUES  (:refid,:type,:member,:before,:amount,:by,:remark,:isAdjustment,:txnType)
                             ";
 
             $memberTxnParams = [
@@ -335,6 +346,7 @@ class CreditController extends Controller
                     ,'by' => $userId
                     ,'remark' => $remarkFrom
                     ,'isAdjustment' => $isAdjustment
+                    ,'txnType' => $txnType
 
                 ];
 
