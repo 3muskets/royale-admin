@@ -136,7 +136,7 @@ class MemberDWController extends Controller
                         AND (? = '' OR (b.created_at + INTERVAL 8 HOUR) <= ?)
                         AND b.payment_type != 'c'
                         AND (a.admin_id = ? OR ? = '')
-                        AND (a.admin_id = ? OR ? = '')
+                        AND (h.admin_id = ? OR ? = '')
                     ";
 
             $params = [
@@ -151,8 +151,7 @@ class MemberDWController extends Controller
                         ,$endDate  
                         ,$tierId  
                         ,$tierId  
-                        ,$agentId  
-                        ,$agentId  
+
 
                     ];
 
