@@ -101,7 +101,9 @@ function loadMainData(containerId)
                     ,["agent",locale['mainData.agent'],true,false]   
                     // ,["check",locale['tooltip.check'],false,false]                 
                     ,["available",locale['mainData.credit'],false,true]
+                    @can('permissions.edit_member_credit')
                     ,["",locale['mainData.action'],false,false]
+                    @endcan
 
                 ];
 
@@ -135,39 +137,41 @@ function loadMainData(containerId)
            
             row.cells[fieldCredit].innerHTML =  utils.formatMoney(available);
 
-            var btnDeposit = document.createElement("BUTTON");
-            btnDeposit.innerHTML = locale['mainData.action.deposit'];
-            btnDeposit.className = "btn btn-sm btn-primary";
-            btnDeposit.onclick = showModal;
-            btnDeposit.rowId = i;
-            btnDeposit.style.margin = "0 15px 0 0";
-            btnDeposit.value = "1";
+            @can('permissions.edit_member_credit')
+                var btnDeposit = document.createElement("BUTTON");
+                btnDeposit.innerHTML = locale['mainData.action.deposit'];
+                btnDeposit.className = "btn btn-sm btn-primary";
+                btnDeposit.onclick = showModal;
+                btnDeposit.rowId = i;
+                btnDeposit.style.margin = "0 15px 0 0";
+                btnDeposit.value = "1";
 
-            var btnWithdraw = document.createElement("BUTTON");
-            btnWithdraw.innerHTML = locale['mainData.action.withdraw'];
-            btnWithdraw.className = "btn btn-sm btn-primary";
-            btnWithdraw.onclick = showModal;
-            btnWithdraw.rowId = i;
-            btnWithdraw.style.margin = "0 15px 0 0";
-            btnWithdraw.value = "2";
+                var btnWithdraw = document.createElement("BUTTON");
+                btnWithdraw.innerHTML = locale['mainData.action.withdraw'];
+                btnWithdraw.className = "btn btn-sm btn-primary";
+                btnWithdraw.onclick = showModal;
+                btnWithdraw.rowId = i;
+                btnWithdraw.style.margin = "0 15px 0 0";
+                btnWithdraw.value = "2";
 
-            var btnAdjustment = document.createElement("BUTTON");
-            btnAdjustment.innerHTML = locale['mainData.action.adjustment'];
-            btnAdjustment.className = "btn btn-sm btn-primary";
-            btnAdjustment.onclick = showModal;
-            btnAdjustment.rowId = i;
-            btnAdjustment.style.margin = "0 15px 0 0";
-            btnAdjustment.value = "3";
+                var btnAdjustment = document.createElement("BUTTON");
+                btnAdjustment.innerHTML = locale['mainData.action.adjustment'];
+                btnAdjustment.className = "btn btn-sm btn-primary";
+                btnAdjustment.onclick = showModal;
+                btnAdjustment.rowId = i;
+                btnAdjustment.style.margin = "0 15px 0 0";
+                btnAdjustment.value = "3";
 
 
-            row.cells[fieldActions].innerHTML = '';
+                row.cells[fieldActions].innerHTML = '';
 
-            if(auth.getUserLevel() == mainData.results[i - 1]["level"] || auth.getUserLevel() == 0)
-            {
-                row.cells[fieldActions].appendChild(btnDeposit);
-                row.cells[fieldActions].appendChild(btnWithdraw);
-                row.cells[fieldActions].appendChild(btnAdjustment);
-            }
+                if(auth.getUserLevel() == mainData.results[i - 1]["level"] || auth.getUserLevel() == 0)
+                {
+                    row.cells[fieldActions].appendChild(btnDeposit);
+                    row.cells[fieldActions].appendChild(btnWithdraw);
+                    row.cells[fieldActions].appendChild(btnAdjustment);
+                }
+            @endcan
 
 
                 if(arrStatus.length != 0)

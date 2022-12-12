@@ -91,7 +91,9 @@ function loadMainData(containerId)
                     ,["suspended",locale['mainData.status'],false,false]
                     ,["created_at",'Created At',false,false]
                     ,["updated_at",'Updated At',false,false]
-                    ,["",locale['mainData.action'],false,false]                   
+                     @can('permissions.edit_banking_acc') 
+                    ,["",locale['mainData.action'],false,false] 
+                     @endcan                  
                 ];
 
     if(auth.getUserLevel() > 0)
@@ -144,6 +146,7 @@ function loadMainData(containerId)
             row.cells[fieldMinAmt].innerHTML = utils.formatMoney(mainData.results[i - 1]["min_deposit_amt"],2);
             row.cells[fieldMaxAmt].innerHTML = utils.formatMoney(mainData.results[i - 1]["max_deposit_amt"],2);
 
+            @can('permissions.edit_banking_acc') 
             if(auth.getUserLevel() == 0)
             {
                 row.cells[fieldActions].innerHTML = '';
@@ -161,6 +164,7 @@ function loadMainData(containerId)
                 row.cells[fieldActions].appendChild(btnEdit);
                 row.cells[fieldActions].className = "pb-0";               
             }
+            @endcan
         }
     }
 }
@@ -319,9 +323,11 @@ function resetMainData()
     <div class="animated fadeIn">
 
         <div class="card">
+            @can('permissions.edit_banking_acc') 
             <div class="card-body">
                 <button type="button" onclick="showModal()">New Bank Account</button>
             </div>
+            @endcan
 
             <div id="main-spinner" class="card-body"></div>
 

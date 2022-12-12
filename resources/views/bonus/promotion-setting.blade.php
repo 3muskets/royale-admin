@@ -149,7 +149,9 @@ function loadMainData(containerId)
                 ,["images", 'Images',true,false]
                 ,["created_at", 'Created at',true,false]
                 ,["updated_at", 'Updated at',true,false]
+                @can('permissions.edit_promo')
                 ,["edit",'Edit',false,false] 
+                @endcan
             ];
 
 
@@ -219,7 +221,7 @@ function loadMainData(containerId)
             else 
                 row.cells[fieldStatus].innerHTML = '<span class="badge badge-warning">'+mainData.results[i - 1]["status_desc"] +'</span>';
 
-
+            @can('permissions.edit_promo')
             var btnEdit = document.createElement("i");
             btnEdit.className = "fa fa-edit fa-2x";
             btnEdit.onclick = showEditModal;
@@ -231,6 +233,7 @@ function loadMainData(containerId)
             row.cells[fieldEdit].innerHTML = "";
             row.cells[fieldEdit].appendChild(btnEdit);
             row.cells[fieldEdit].className = "pb-0";
+            @endcan
         }  
     }
 
@@ -528,7 +531,9 @@ function eidtReadURL(input)
                 <div class="card-footer">
                     <button type="button" id="submit" class="btn btn-sm btn-success" onclick="filterMainData()"><i class="fa fa-dot-circle-o"></i> Filter</button>
                     <button type="button" class="btn btn-sm btn-danger" onclick="resetMainData()"><i class="fa fa-ban"></i> Reset</button>
-                    <button type="button" class="btn btn-sm btn-primary pull-right" onclick="showAddPromo()"><i class="fa fa-plus"></i> Create</button>       
+                    @can('permissions.edit_promo')
+                    <button type="button" class="btn btn-sm btn-primary pull-right" onclick="showAddPromo()"><i class="fa fa-plus"></i> Create</button>  
+                    @endcan     
                 </div>
             </div>
             <div class="card">

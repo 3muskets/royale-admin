@@ -132,13 +132,13 @@ class CreditViewController extends Controller
 
     public function memberCredit()
     {
-        Helper::checkUAC('permissions.member_credit');
+        Helper::checkUAC('permissions.view_member_credit');
         return view('credit.member-list');
     }
 
     public function getMemberCreditList(Request $request)
     {
-        Helper::checkUAC('permissions.member_credit');
+        Helper::checkUAC('permissions.view_member_credit');
 
         // Helper::checkUAC('system.accounts.subaccount');
 

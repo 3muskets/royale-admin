@@ -35,7 +35,7 @@ class BonusViewController extends Controller
     {   
 
         Helper::checkUAC('system.accounts.admin');
-        Helper::checkUAC('permissions.view_rebate_setting');
+        Helper::checkUAC('permissions.view_promo');
 
         $OptionPromoStatus = BonusController::getOptionPromoStatus();
 

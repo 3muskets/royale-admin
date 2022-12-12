@@ -488,29 +488,33 @@
 
 
                     @can('system.accounts.admin')
+                    @canany(['permissions.view_promo', 'permissions.view_cashback_setting'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> 
                              Bonus
                         </a>
                         
                         <ul class="nav-dropdown-items">   
-
+                            @can('permissions.view_promo')
                             <li class="nav-item">
                                 <a class="nav-link" href="/promo/setting"><i class="icon-tag"></i>
                                     Promo Setting
                                 </a>
                             </li>
+                            @endcan
                         </ul>
                         <ul class="nav-dropdown-items">   
-
+                            @can('permissions.view_cashback_setting')
                             <li class="nav-item">
                                 <a class="nav-link" href="/cashback/setting"><i class="fa fa-dollar"></i>
                                     Cashback Setting
                                 </a>
                             </li>
+                            @endcan
                         </ul>
 
                     </li>
+                    @endcan
                     @endcan
 
 
@@ -586,32 +590,39 @@
  -->
 
                     @can('system.accounts.admin')
+                    @canany(['permissions.cms_main_banner', 'permissions.cms_topbar_announcement', 'permissions.cms_popup'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> 
                             CMS
                         </a>
                         
                         <ul class="nav-dropdown-items">
+                            @can('permissions.cms_main_banner') 
                             <li class="nav-item">
                                 <a class="nav-link" href="/cms/banner"><i class="icon-settings"></i>  
                                     Main Banner
                                 </a>
-                            </li> 
+                            </li>
+                            @endcan 
+                            @can('permissions.cms_topbar_announcement') 
                             <li class="nav-item">
                                 <a class="nav-link" href="/cms/announcement"><i class="icon-settings"></i>  
                                     Top Bar Announcement
                                 </a>
                             </li>  
+                            @endcan
+                            @can('permissions.cms_popup') 
                             <li class="nav-item">
                                 <a class="nav-link" href="/cms/popup"><i class="icon-settings"></i>  
                                     Pop Up
                                 </a>
                             </li> 
+                            @endcan
                              
                         </ul>
                     </li>
                     @endcan
-
+                    @endcan
 
 
 

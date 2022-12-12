@@ -301,6 +301,15 @@
 
                                                 <li>
                                                     <input type="checkbox" class="checkul" id="member_credit">Member Credit
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_member_credit">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_member_credit">Edit
+                                                        </li>
+                                                    </ul>
+
                                                 </li>
                                                 <li>
                                                     <input type="checkbox" class="checkul" id="parent-memmber_levelsetting">Member Level Setting
@@ -356,10 +365,10 @@
                                                 <input type="checkbox" class="checkul" id="parent-promo">Promo Setting
                                                 <ul>
                                                     <li>
-                                                        <input type="checkbox" id="view_promog">View
+                                                        <input type="checkbox" id="view_promo">View
                                                     </li>
                                                     <li>
-                                                        <input type="checkbox" id="edit_promog">Edit
+                                                        <input type="checkbox" id="edit_promo">Edit
                                                     </li>
                                                 </ul>
                                             </li>
@@ -422,7 +431,7 @@
                                     </div>
 
 
-                                    <div class="row form-group">
+    <!--                                 <div class="row form-group">
                                         <li>
                                             <input type="checkbox" class="checkall" name="settings" id="parent-s">{{ __('app.admins.admins_role.create.setting') }}
                                             <ul>
@@ -443,7 +452,7 @@
                                             </ul>
                                         </li>
                                     </div>
-
+ -->
                                 </div>
 
                             </div>

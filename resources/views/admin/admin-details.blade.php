@@ -156,6 +156,17 @@ function enableMainForm()
                         </div>
                     </div>
 
+
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                                <label for="name">Role Type</label>
+                                <select class="form-control" name="role" id="role">
+                                    {{ Helper::generateOptions($optionsAdminRoles,$data->id) }}
+                                </select>
+                        </div>
+                    </div>
+
+
                     <div class="row">
                         <div class="form-group col-sm-4">
                             <label>{{ __('app.admins.admindetails.status') }}</label>

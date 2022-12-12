@@ -125,10 +125,43 @@ class AuthServiceProvider extends ServiceProvider
 
         });
 
+        Gate::define('permissions.view_member_credit', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('view_member_credit'))
+                return true;
+            else
+                return false;
+
+        });
+
+
+        Gate::define('permissions.edit_member_credit', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_member_credit'))
+                return true;
+            else
+                return false;
+
+        });
+
+
+
         Gate::define('permissions.view_member_list', function ($user) 
         {
             //for settings
             if(Helper::checkUserPermissions('view_member_list'))
+                return true;
+            else
+                return false;
+
+        });
+
+        Gate::define('permissions.edit_member_list', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_member_list'))
                 return true;
             else
                 return false;
@@ -165,6 +198,18 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
 
         });
+
+
+        Gate::define('permissions.edit_banking_acc', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_banking_acc'))
+                return true;
+            else
+                return false;
+
+        });
+
         Gate::define('permissions.view_dw_request', function ($user) 
         {
             //for settings
@@ -176,7 +221,15 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
+        Gate::define('permissions.edit_dw_request', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_dw_request'))
+                return true;
+            else
+                return false;
 
+        });
         
 
         Gate::define('permissions.member_msg', function ($user) 
@@ -228,6 +281,27 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
 
         });
+
+
+        Gate::define('permissions.view_promo', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('view_promo'))
+                return true;
+            else
+                return false;
+
+        });
+        Gate::define('permissions.edit_promo', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_promo'))
+                return true;
+            else
+                return false;
+
+        });
+
 
         Gate::define('permissions.view_cashback_setting', function ($user) 
         {
@@ -307,6 +381,40 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
 
         });
+
+        Gate::define('permissions.cms_main_banner', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('cms_main_banner'))
+                return true;
+            else
+                return false;
+
+        });
+
+
+        Gate::define('permissions.cms_topbar_announcement', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('cms_topbar_announcement'))
+                return true;
+            else
+                return false;
+
+        });
+
+
+        Gate::define('permissions.cms_popup', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('cms_popup'))
+                return true;
+            else
+                return false;
+
+        });
+
+
 
 
         Gate::define('permissions.create_admin', function ($user) 

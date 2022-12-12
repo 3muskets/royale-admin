@@ -463,32 +463,34 @@ function showDetailsModal(rowId)
 
     if(mainData.results[rowId - 1]["status"] == 'n' && paymentType == 'b')
     {
-        var modalCard = document.getElementById("modalCard");
+        @can('permissions.edit_dw_request')
+            var modalCard = document.getElementById("modalCard");
 
-        var modalFooter = document.createElement("div");
-        modalFooter.id = "modal-footer";
-        modalFooter.className = "card-footer";
+            var modalFooter = document.createElement("div");
+            modalFooter.id = "modal-footer";
+            modalFooter.className = "card-footer";
 
-        var btnApprove = document.createElement("BUTTON");
-        btnApprove.innerHTML = "{!! __('app.banking.dw.actions.approve') !!}";
-        btnApprove.className = "btn btn-primary btn-ladda";
-        btnApprove.onclick = doApprove;
-        btnApprove.rowId = rowId;
-        btnApprove.style.margin = "0 15px 0 0";
-        btnApprove.value = "1";
+            var btnApprove = document.createElement("BUTTON");
+            btnApprove.innerHTML = "{!! __('app.banking.dw.actions.approve') !!}";
+            btnApprove.className = "btn btn-primary btn-ladda";
+            btnApprove.onclick = doApprove;
+            btnApprove.rowId = rowId;
+            btnApprove.style.margin = "0 15px 0 0";
+            btnApprove.value = "1";
 
-        var btnReject = document.createElement("BUTTON");
-        btnReject.innerHTML = "{!! __('app.banking.dw.actions.reject') !!}";
-        btnReject.className = "btn btn-primary btn-ladda";
-        btnReject.onclick = doReject;
-        btnReject.rowId = rowId;
-        btnReject.style.margin = "0 15px 0 0";
-        btnReject.value = "2";
+            var btnReject = document.createElement("BUTTON");
+            btnReject.innerHTML = "{!! __('app.banking.dw.actions.reject') !!}";
+            btnReject.className = "btn btn-primary btn-ladda";
+            btnReject.onclick = doReject;
+            btnReject.rowId = rowId;
+            btnReject.style.margin = "0 15px 0 0";
+            btnReject.value = "2";
 
-        
-        modalCard.appendChild(modalFooter);
-        modalFooter.appendChild(btnApprove);
-        modalFooter.appendChild(btnReject);
+            
+            modalCard.appendChild(modalFooter);
+            modalFooter.appendChild(btnApprove);
+            modalFooter.appendChild(btnReject);
+        @endcan
     }
 }
 

@@ -161,8 +161,10 @@ function loadMainData(containerId)
                     ,["",locale['mainData.credit'],true,false]
                     ,["", locale['mainData.status'],true, false]
                     ,["", locale['mainData.suspended'],true, false]
+                    @can('permissions.edit_member_list') 
                     ,["", locale['mainData.edit'],true, false]
                     ,["", locale['mainData.action'],true, false]
+                    @endcan
                     ,["member",locale['mainData.member'],false,true]
                     ,["",locale['mainData.bank'],false,true]
                     /*,["",locale['mainData.wallet'],true,false]*/
@@ -195,8 +197,10 @@ function loadMainData(containerId)
                     ,["available",locale['mainData.credit'],false,true]
                     ,["status", locale['mainData.status'],false, false]
                     ,["suspended", locale['mainData.suspended'],false, false]
+                    @can('permissions.edit_member_list')
                     ,["edit", locale['mainData.edit'],false, false]
                     ,["", locale['mainData.action'],false, false]
+                    @endcan
                     ,["mobile",locale['mainData.mobile'],false,false]
                     ,["email",locale['mainData.email'],false,false]
                     ,["bank",locale['mainData.bankname'],false,false]
@@ -350,39 +354,43 @@ function loadMainData(containerId)
                 row.cells[fieldLevel].innerHTML =  locale['mainData.level.platinum'];
 
 
-            //Edit button
-            var btnEdit = document.createElement("i");
-            btnEdit.className = "fa fa-edit fa-2x";
-            btnEdit.onclick = showEditModal;
-            btnEdit.rowId = i;
-            btnEdit.style.cursor = "pointer";
-            btnEdit.style.color = "#11acf4";
-            btnEdit.setAttribute("data-toggle", "tooltip");
-            btnEdit.setAttribute("title", locale['tooltip.edit']);
-            row.cells[fieldEdit].innerHTML = "";
-            row.cells[fieldEdit].className = "pb-0";
+            @can('permissions.edit_member_list')
+                //Edit button
+                var btnEdit = document.createElement("i");
+                btnEdit.className = "fa fa-edit fa-2x";
+                btnEdit.onclick = showEditModal;
+                btnEdit.rowId = i;
+                btnEdit.style.cursor = "pointer";
+                btnEdit.style.color = "#11acf4";
+                btnEdit.setAttribute("data-toggle", "tooltip");
+                btnEdit.setAttribute("title", locale['tooltip.edit']);
+                row.cells[fieldEdit].innerHTML = "";
+                row.cells[fieldEdit].className = "pb-0";
 
-            //Action button- change pwd
-            var imgChange = document.createElement("img");
-            // imgChange.onclick = showPasswordModal;
-            imgChange.style.cursor="pointer";
-            imgChange.setAttribute("class","left");
-            imgChange.setAttribute("data-toggle", "tooltip");
-            imgChange.setAttribute("title", locale['tooltip.changepassword']);
-            imgChange.rowId = i;
-            imgChange.src="/images/icon/icon-pw4.png";
-            imgChange.style.height = '30px';
-            imgChange.style.width = '30px';
-            imgChange.style.margin = "0 15px 0 0";
-            imgChange.onclick = showPasswordModal;
-            row.cells[fieldAction].innerHTML = "";
+                //Action button- change pwd
+                var imgChange = document.createElement("img");
+                // imgChange.onclick = showPasswordModal;
+                imgChange.style.cursor="pointer";
+                imgChange.setAttribute("class","left");
+                imgChange.setAttribute("data-toggle", "tooltip");
+                imgChange.setAttribute("title", locale['tooltip.changepassword']);
+                imgChange.rowId = i;
+                imgChange.src="/images/icon/icon-pw4.png";
+                imgChange.style.height = '30px';
+                imgChange.style.width = '30px';
+                imgChange.style.margin = "0 15px 0 0";
+                imgChange.onclick = showPasswordModal;
+                row.cells[fieldAction].innerHTML = "";
 
-            if(auth.getUserLevel() == mainData.results[i - 3]["level"] || auth.getUserLevel() == 0)
-            {
-                row.cells[fieldAction].appendChild(imgChange);
-                row.cells[fieldEdit].appendChild(btnEdit);
-            }
+                if(auth.getUserLevel() == mainData.results[i - 3]["level"] || auth.getUserLevel() == 0)
+                {
+                    row.cells[fieldAction].appendChild(imgChange);
+                    row.cells[fieldEdit].appendChild(btnEdit);
+                }
+            @endcan
+
         }
+
     }
 }
 
