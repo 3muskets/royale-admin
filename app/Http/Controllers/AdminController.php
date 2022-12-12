@@ -35,9 +35,9 @@ class AdminController extends Controller
             $id = $request->input('id');
             
             $sql = "
-                        SELECT a.id,a.username,(a.created_at + INTERVAL 8 HOUR) 'created_at',a.status/*, b.role_id*/
+                        SELECT a.id,a.username,(a.created_at + INTERVAL 8 HOUR) 'created_at',a.status, b.role_id
                         FROM admin a
-/*                        LEFT JOIN admin_role b ON a.id = b.admin_id */
+                        LEFT JOIN admin_role b ON a.id = b.admin_id 
                         WHERE id = :id
                         AND level = 0
                     ";
@@ -80,7 +80,7 @@ class AdminController extends Controller
 
             $sql = "
                 SELECT a.id,a.username,(a.created_at + INTERVAL 8 HOUR) 'created_at' ,a.status,a.admin_id
-                ,c.type,c.is_deleted,a.is_sub
+                ,c.type,c.is_deleted,a.is_sub,b.role_id
                 FROM admin a
                 LEFT JOIN admin_role b ON a.id = b.admin_id 
                 LEFT JOIN role c ON c.id = b.role_id    

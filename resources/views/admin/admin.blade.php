@@ -94,7 +94,7 @@ function loadMainData(containerId)
         {   
             //username
             var a = document.createElement("a");
-            a.href = "/admins/admin/details?id=" + mainData.results[i - 1]["id"];
+            a.href = "/admins/admin/details?id=" + mainData.results[i - 1]["role_id"];
             a.innerHTML = mainData.results[i - 1]["username"];
 
             row.cells[fieldUsername].innerHTML = "";
