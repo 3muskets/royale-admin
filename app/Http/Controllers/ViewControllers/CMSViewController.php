@@ -104,7 +104,7 @@ class CMSViewController  extends Controller
 
     public function updateBanner(Request $request)
     {   
-        Helper::checkUAC('system.accounts.asubaccountdmin');
+        Helper::checkUAC('system.accounts.admin');
 
         $data = CMSController::updateBanner($request);
 
