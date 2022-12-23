@@ -951,8 +951,14 @@ class BonusController extends Controller
             {
 
                 if($type == 'd')
-                    return true;
-                
+                {
+                    $response = ['status' => 1
+                                ,'error' => __('Success') 
+                                ];   
+
+                    return $response;
+                }
+
                 $db = DB::select("
                     SELECT id
                     FROM member_dw
