@@ -359,6 +359,9 @@ Route::get('/reports/statement/paymentgateway', 'ViewControllers\Reports\Payment
 Route::get('/ajax/reports/statement/paymentgateway/list', 'ViewControllers\Reports\PaymentGatewayViewController@getList');
 
 
+Route::get('/reports/promotion', 'ViewControllers\Reports\PromotionViewController@index');
+Route::get('/ajax/reports/promotion/list', 'ViewControllers\Reports\PromotionViewController@getList');
+
 
 /*
 |--------------------------------------------------------------------------

@@ -337,6 +337,10 @@
                                                 <li>
                                                     <input type="checkbox" id="member_credit_report">Member Credit Report
                                                 </li>
+                                                <li>
+                                                    <input type="checkbox" id="member_promotion_report">Member Promotion Report
+                                                </li>
+
                                             </ul>
                                         </li>
                                     </div>

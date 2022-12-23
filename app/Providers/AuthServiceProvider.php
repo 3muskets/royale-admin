@@ -372,6 +372,17 @@ class AuthServiceProvider extends ServiceProvider
 
         });
 
+        Gate::define('permissions.member_promotion_report', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('member_promotion_report'))
+                return true;
+            else
+                return false;
+
+        });
+
+
         Gate::define('permissions.member_referral_report', function ($user) 
         {
             //for settings

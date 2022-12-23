@@ -517,8 +517,8 @@
                     @endcan
                     @endcan
 
-
-                    @canany(['permissions.txn_history_report', 'permissions.win_loss_report', 'permissions.win_loss_by_product_report', 'permissions.agent_credit_report', 'permissions.member_credit_report'])
+                    @can('system.accounts.admin')
+                    @canany(['permissions.txn_history_report', 'permissions.win_loss_report', 'permissions.win_loss_by_product_report', 'permissions.agent_credit_report', 'permissions.member_credit_report','permissions.promotion_report'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i> 
                             {{ __('app.sidebar.reports') }}
@@ -540,13 +540,13 @@
                             </li>
                              @endcan
 
-<!--                              @can('permissions.win_loss_by_product_report')
-                             <li class="nav-item">
-                                <a class="nav-link" href="/reports/winloss_by_product"><i class="icon-action-redo"></i>  
-                                  {{ __('app.sidebar.reports.winlossbyprod') }}
+                            @can('permissions.member_promotion_report')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/reports/promotion"><i class="icon-notebook"></i>  
+                                   Member Promotion Report
                                 </a>
                             </li>
-                            @endcan -->
+                            @endcan
 
                             @can('permissions.member_credit_report')
                             <li class="nav-item">
@@ -569,6 +569,7 @@
                             </li> -->
                         </ul>
                     </li>
+                    @endcan
                     @endcan
 
 
