@@ -299,7 +299,7 @@ class CalculateMemberPromoTurnover extends Command
             
                 //process promo turnover 
                 $db = DB::select("
-                        SELECT a.id,a.deposit_amount,a.turnover,a.target_turnover,a.target_winover,a.win_loss,a.promo_id
+                        SELECT a.id,a.deposit_amount,a.turnover,a.target_turnover,a.target_winover,a.win_loss,a.promo_id,a.promo_amount
                         ,b.is_casino,b.is_sportbook,b.is_slot
                         FROM member_promo_turnover a
                         INNER JOIN promo_setting b
@@ -320,6 +320,7 @@ class CalculateMemberPromoTurnover extends Command
                     $targetTurnover = $db[0]->target_turnover;
                     $targetWinover = $db[0]->target_winover;
                     $depositAmt = $db[0]->deposit_amount;
+                    $promoAmt = $db[0]->promo_amount;
                     $isCasino = $db[0]->is_casino;
                     $isSportbook = $db[0]->is_sportbook;
                     $isSlot = $db[0]->is_slot;
@@ -338,7 +339,7 @@ class CalculateMemberPromoTurnover extends Command
                     }
 
                 
-                    if( ($ttlTurnover >= $targetTurnover && $targetWinover < $ttlWinLoss) || (-$ttlWinLoss >= ($depositAmt - 10)) )
+                    if( ($ttlTurnover >= $targetTurnover) || (-$ttlWinLoss >= ($depositAmt+$promoAmt - 10)) )
                     {
                         $status = 's';
                     }
