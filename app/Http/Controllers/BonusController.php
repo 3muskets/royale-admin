@@ -947,9 +947,12 @@ class BonusController extends Controller
                     return $response;
                 }
             }
-            else if($type == 'w' || $type == 'm')
+            else if($type == 'd' || $type == 'w' || $type == 'm')
             {
 
+                if($type == 'd')
+                    return true;
+                
                 $db = DB::select("
                     SELECT id
                     FROM member_dw
