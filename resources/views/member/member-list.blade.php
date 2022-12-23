@@ -202,7 +202,6 @@ function loadMainData(containerId)
                     ,["", locale['mainData.action'],false, false]
                     @endcan
                     ,["mobile",locale['mainData.mobile'],false,false]
-                    ,["email",locale['mainData.email'],false,false]
                     ,["bank",locale['mainData.bankname'],false,false]
                     ,["acc_no",locale['mainData.bankacc'],false,false]
                     ,["name",locale['mainData.bankaddress'],false,false]

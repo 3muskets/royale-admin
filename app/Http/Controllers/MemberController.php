@@ -88,7 +88,7 @@ class MemberController extends Controller
                 $adminId = '';
 
             $sql = "
-                    SELECT a.id, a.mobile, a.email, a.username, a.status, a.suspended,a.wallet_address, a.is_duplicate_ip,a.admin_id
+                    SELECT a.id, a.mobile, a.username, a.status, a.suspended,a.wallet_address, a.is_duplicate_ip,a.admin_id
                         , (a.created_at + INTERVAL 8 HOUR) 'created_at', (a.last_login + INTERVAL 8 HOUR) 'last_login'
                         , a.last_ip, b.available, c.bank, c.acc_no, c.name,e.username 'agent'
                         , d.unread_msg
