@@ -234,11 +234,25 @@ class CalculateCashback extends Command
                                         ON a.txn_id = b.txn_id 
                                         WHERE b.type = 'c'
                                         AND ((b.created_at + INTERVAL 8 HOUR) >= ? AND (b.created_at + INTERVAL 8 HOUR) <= ?)
+
+                                        UNION ALL
+
+                                        SELECT a.txn_id,a.member_id,'11' as 'provider_id',a.created_at,
+                                        1 AS 'category',
+                                        (a.amount) 'turnover',
+                                        (b.amount -a.amount) 'win_loss'
+                                        FROM xe88_debit a 
+                                        INNER JOIN xe88_credit b
+                                            ON a.txn_id = b.txn_id 
+                                        WHERE ((b.created_at + INTERVAL 8 HOUR) >= ? AND (b.created_at + INTERVAL 8 HOUR) <= ?)
+
+
                                     ) AS a
                                     GROUP BY a.member_id
 
 
                     ",[$prevStartDate,$prevEndDate
+                       ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate
