@@ -64,7 +64,7 @@ function prepareLocale()
 var refreshMainData = false;
 var mainData;
 var mainDataTotal;
-var bankList;
+var bankList = [];
 
 function getBankList() 
 {
