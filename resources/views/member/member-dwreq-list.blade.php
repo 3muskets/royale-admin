@@ -86,7 +86,7 @@ function getBankList()
                 bankList = [];
             }
 
-            console.log(bankList);
+
         }
     });
 }
@@ -381,36 +381,43 @@ function showDetailsModal(rowId)
         $("#user_acc_name").hide();
         $("#user_acc_no").hide();
 
-        $("#admin_bank").val(adminBank);
-        $("#admin_acc_name").val(adminAccName);
+    
+        if(bankList.length > 0)
+        {        
 
-        $('#admin_acc_no').append('<option>' + '</option>').children().remove();
-        
+            $("#admin_bank").val(adminBank);
+            $("#admin_acc_name").val(adminAccName);
 
-        for (i = 0; i < bankList.results.length; i++ ) 
-        {
-            $('#admin_acc_no').append($('<option />').attr('value', bankList.results[i]['acc_no']).html(bankList.results[i]['acc_no']));
-        
-        }
+            $('#admin_acc_no').append('<option>' + '</option>').children().remove();
 
-        $('#admin_bank_id').val(adminBankId);
-        $("#admin_acc_no").val(adminAccNo);
-        $("#admin_bank").val(adminBank);
-        $("#admin_acc_name").val(adminAccName);
-
-        $('#admin_acc_no').on('change', function() {
-            
             for (i = 0; i < bankList.results.length; i++ ) 
             {
-                if(bankList.results[i]['acc_no'] == this.value)
-                {
-                    $("#admin_bank").val(bankList.results[i]['bank']);
-                    $("#admin_acc_name").val(bankList.results[i]['name']);
-                    $('#admin_bank_id').val(bankList.results[i]['info_id']);                
-                }
+                $('#admin_acc_no').append($('<option />').attr('value', bankList.results[i]['acc_no']).html(bankList.results[i]['acc_no']));
+            
             }
 
-        });
+            $('#admin_bank_id').val(adminBankId);
+            $("#admin_acc_no").val(adminAccNo);
+            $("#admin_bank").val(adminBank);
+            $("#admin_acc_name").val(adminAccName);
+
+            $('#admin_acc_no').on('change', function() {
+                
+                for (i = 0; i < bankList.results.length; i++ ) 
+                {
+                    if(bankList.results[i]['acc_no'] == this.value)
+                    {
+                        $("#admin_bank").val(bankList.results[i]['bank']);
+                        $("#admin_acc_name").val(bankList.results[i]['name']);
+                        $('#admin_bank_id').val(bankList.results[i]['info_id']);                
+                    }
+                }
+
+            });
+                
+        }
+
+
 
 
         document.getElementById("image").src = mainData.results[rowId - 1]["image"];
