@@ -109,7 +109,7 @@ class HomeController extends Controller
             $db = DB::select("
                     SELECT COUNT(a.id) 'member' 
                     FROM member a
-                    WHERE (a.admin_id = ? OR a.admin_id = '') 
+                    WHERE (a.admin_id = ? OR '' = ?) 
                     ",[$adminId,$adminId]
                 );
 
@@ -149,7 +149,7 @@ class HomeController extends Controller
                     FROM member a 
                     WHERE (a.created_at >= :start_date OR :start_date1 = '')
                     AND (a.created_at <= :end_date OR :end_date1 = '')
-                    AND (a.admin_id = :admin_id OR a.admin_id = :admin_id1)
+                    AND (a.admin_id = :admin_id OR '' = :admin_id1)
                     ";
 
             $params['start_date'] = $startDate;
