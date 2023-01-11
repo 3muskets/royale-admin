@@ -98,35 +98,45 @@ function loadMainData()
     }
 
 
+     $('#status').append('{{ Helper::generateOptions($optionsStatus,'') }}');
 
 
+    var date = utils.getToday();
+
+    utils.datepickerStart('s_date','e_date','s_date1',utils.formattedDate(date));
+    utils.datepickerEnd('s_date','e_date','e_date1',utils.formattedDate(date),1);
 
 
-    $("#amount").val(utils.formatMoney(mainData[0].amount,2));
-;
-    
-
-    var inputAmt = $("#amount");
-    utils.formatCurrencyInput(inputAmt);
-
-
-    $('#status').append('{{ Helper::generateOptions($optionsStatus,'') }}');
-    /*$('#frequency').append('{{ Helper::generateOptions($optionsFrequency,'') }}');*/
-
-
-    utils.datepickerStart('s_date','e_date','s_date1',utils.formattedDate(mainData[0].start_date));
-    utils.datepickerEnd('s_date','e_date','e_date1',utils.formattedDate(mainData[0].end_date),1);
-
-    
-    document.getElementById("status").value = mainData[0].status;
-    /*document.getElementById("frequency").value = mainData[0].frequency;*/
-
-
-    for(var i = 0; i < 1; i++)
+    if(mainData.length > 0)
     {
 
-        document.getElementById("rate").value = mainData[i].rate;
+        $("#amount").val(utils.formatMoney(mainData[0].amount,2));
+        
+
+        var inputAmt = $("#amount");
+        utils.formatCurrencyInput(inputAmt);
+
+
+       
+        /*$('#frequency').append('{{ Helper::generateOptions($optionsFrequency,'') }}');*/
+
+
+        utils.datepickerStart('s_date','e_date','s_date1',utils.formattedDate(mainData[0].start_date));
+        utils.datepickerEnd('s_date','e_date','e_date1',utils.formattedDate(mainData[0].end_date),1);
+
+        
+        document.getElementById("status").value = mainData[0].status;
+        /*document.getElementById("frequency").value = mainData[0].frequency;*/
+
+
+        for(var i = 0; i < 1; i++)
+        {
+
+            document.getElementById("rate").value = mainData[i].rate;
+        }
     }
+
+
 }
 
 function updateCashBack() 
