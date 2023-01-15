@@ -349,6 +349,8 @@ class BonusController extends Controller
             $isSlot = $request->input('is_slot');
             $promoDetail = $request->input('promo_detail');
 
+            $promoDetail = str_replace(',', '<br>', $promoDetail);
+
             $status = $request->input('status');
 
             //banner image

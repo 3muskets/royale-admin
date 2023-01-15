@@ -44,7 +44,14 @@ class CMSViewController  extends Controller
         return view('cms.announcement')->with(['optionsStatus' => $optionsStatus]);
     }
 
+    public function indexWhatsapp()
+    {
+        Helper::checkUAC('system.accounts.admin');
 
+        $number = CMSController::getCurrentNumber();
+
+        return view('cms.whatsapp')->with(['num' => $number]);
+    }
 
     public function indexPopup()
     {
@@ -130,6 +137,13 @@ class CMSViewController  extends Controller
         return $data;
     }
 
+    public function updateWhatsapp(Request $request)
+    {   
+        Helper::checkUAC('system.accounts.admin');
 
+        $data = CMSController::updateWhatsapp($request);
+
+        return $data;
+    }
 
 }

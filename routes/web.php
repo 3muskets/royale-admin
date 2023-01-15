@@ -204,6 +204,7 @@ Route::post('/ajax/accounts/subaccounts/check_user', 'SubAccountController@check
 Route::get('/member/dwreq', 'ViewControllers\MemberDWReqViewController@index');
 
 //ajax
+Route::get('/ajax/member/dw/count', 'MemberDWController@getPendingCount');
 Route::get('/ajax/member/dwreq/list', 'ViewControllers\MemberDWReqViewController@getList');
 Route::post('/ajax/member/dwreq/approve', 'ViewControllers\MemberDWReqViewController@approve');
 Route::post('/ajax/member/dwreq/reject', 'ViewControllers\MemberDWReqViewController@reject');
@@ -372,6 +373,7 @@ Route::get('/ajax/reports/promotion/list', 'ViewControllers\Reports\PromotionVie
 Route::get('/cms/banner', 'ViewControllers\CMSViewController@index');
 Route::get('/cms/announcement', 'ViewControllers\CMSViewController@indexAnn');
 Route::get('/cms/popup', 'ViewControllers\CMSViewController@indexPopup');
+Route::get('/cms/whatsapp', 'ViewControllers\CMSViewController@indexWhatsapp');
 
 Route::get('/ajax/banner/getList', 'ViewControllers\CMSViewController@getMainBannerList');
 Route::get('/ajax/announcement/getList', 'ViewControllers\CMSViewController@getAnnouncementList');
@@ -385,6 +387,8 @@ Route::post('/ajax/cms/announcement/create', 'ViewControllers\CMSViewController@
 Route::post('/ajax/cms/announcement/update', 'ViewControllers\CMSViewController@updateAnnouncement');
 
 Route::post('/ajax/cms/popup/update', 'ViewControllers\CMSViewController@updatePopup');
+
+Route::post('/ajax/cms/whatsapp', 'ViewControllers\CMSViewController@updateWhatsapp');
 
 /*
 |--------------------------------------------------------------------------

@@ -726,6 +726,66 @@ class CMSController extends Controller
         }
     }
 
+    public static function updateWhatsapp(Request $request)
+    {
+        DB::beginTransaction();
+
+        try
+        {
+            $number = $request->input('f_no');
+
+            $db = DB::select("SELECT id from whatsapp");
+
+            if(sizeof($db) == 0)
+            {
+                DB::insert("INSERT INTO whatsapp(num) VALUES(?)", [$number]);
+            }
+            else
+            {   
+                DB::update("UPDATE whatsapp SET num = ? WHERE id = 1", [$number]);
+            }
+
+            //logging                
+            $response = ['status' => 1];
+
+
+            DB::commit();
+
+            return json_encode($response);
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            log::debug($e);
+            $response = ['status' => 0
+                        ,'error' => __('error.merchant.internal_error')
+                        ];
+            return json_encode($response);
+        }
+    }
+
+    public static function getCurrentNumber()
+    {
+        try
+        {
+            $db = DB::select("SELECT num FROM whatsapp WHERE id = 1");
+
+            if(sizeof($db) > 0)
+            {
+                $db = $db[0]->num;
+            }
+
+            return $db;
+
+        }
+        catch(\Exception $e)
+        {
+            log::debug($e);
+
+            return [];
+        }
+    }
+
 
     public static function getOptionStatus()
     {

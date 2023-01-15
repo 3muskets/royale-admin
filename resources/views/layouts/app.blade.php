@@ -18,6 +18,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/auth.js"></script>
+    <script src="/js/summernote.js"></script>
   
     <!-- JqueryUI -->
     <script src="/jqueryui/jquery-ui.min.js"></script>
@@ -46,6 +47,7 @@
     <script type="text/javascript">
 
     var locale = [];
+    var dwCount;
 
     $(document).ready(function() 
     {
@@ -75,26 +77,43 @@
 
 
         //web socket        
-        createWS();
+        // createWS();
 
-        Echo.private('bo-main.{{ Auth::user()->ws_channel }}')
-            .listen('.dwreq', (e) => 
-            {
-                // console.log(e);
-                if(auth.getUserLevel() == 0)
+        // Echo.private('bo-main.{{ Auth::user()->ws_channel }}')
+        //     .listen('.dwreq', (e) => 
+        //     {
+        //         // console.log(e);
+        //         if(auth.getUserLevel() == 0)
+        //         {
+        //             $('#dwreq_count').html(e.pending_count);
+        //             playAudio();
+
+        //             var div = document.getElementById('header_dwreq');
+        //             clearTimeout(div.flashTimer);
+        //             div.flashCount = 0;
+        //             div.maxFlash = -1;
+        //             flashDiv(div);
+        //         }
+        //     });
+
+
+        dwCount = setInterval(function()
+        {
+            $.ajax({
+                type: "GET",
+                url: '/ajax/member/dw/count',
+                success: function(data)
                 {
-                    $('#dwreq_count').html(e.pending_count);
-                    playAudio();
+                    var currentCount = $("#dwreq_count").text();
 
-                    var div = document.getElementById('header_dwreq');
-                    clearTimeout(div.flashTimer);
-                    div.flashCount = 0;
-                    div.maxFlash = -1;
-                    flashDiv(div);
+                    if(data > 0)
+                    {
+                        $('#dwreq_count').html(data);
+                        playAudio();
+                    }
                 }
             });
-
-
+        }, 10000);
     });
 
     $(window).resize(function() 
@@ -619,14 +638,19 @@
                                 </a>
                             </li> 
                             @endcan
+
+                            @can('permissions.cms_whatsapp') 
+                            <li class="nav-item">
+                                <a class="nav-link" href="/cms/whatsapp"><i class="icon-settings"></i>  
+                                    Whatsapp
+                                </a>
+                            </li> 
+                            @endcan
                              
                         </ul>
                     </li>
                     @endcan
                     @endcan
-
-
-
 
                     
                     @can('system.accounts.super.admin')

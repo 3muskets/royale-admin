@@ -425,7 +425,15 @@ class AuthServiceProvider extends ServiceProvider
 
         });
 
+        Gate::define('permissions.cms_whatsapp', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('cms_whatsapp'))
+                return true;
+            else
+                return false;
 
+        });
 
 
         Gate::define('permissions.create_admin', function ($user) 

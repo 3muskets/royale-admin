@@ -430,6 +430,9 @@
                                                 <li>
                                                     <input type="checkbox" id="cms_popup">Pop Up
                                                 </li>
+                                                <li>
+                                                    <input type="checkbox" id="cms_whatsapp">Whatsapp
+                                                </li>
                                             </ul>
                                         </li>
                                     </div>
