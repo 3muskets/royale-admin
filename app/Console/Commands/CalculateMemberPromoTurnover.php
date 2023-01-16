@@ -193,8 +193,8 @@ class CalculateMemberPromoTurnover extends Command
                                 3 AS 'category',
                                 (a.bet) 'turnover',
                                 (b.amount -a.bet) 'win_loss'
-                                FROM scr_debit a 
-                                INNER JOIN scr_credit b
+                                FROM pussy_debit a 
+                                INNER JOIN pussy_credit b
                                     ON a.txn_id = b.txn_id 
                                 WHERE b.type = 'c' AND b.is_process IS NULL
 
@@ -311,7 +311,7 @@ class CalculateMemberPromoTurnover extends Command
                 else if($providerId == 10)
                 {
                     DB::update("
-                        UPDATE scr_credit
+                        UPDATE pussy_credit
                         SET is_process = ?
                         WHERE txn_id = ?
                         ",['1',$txnId]

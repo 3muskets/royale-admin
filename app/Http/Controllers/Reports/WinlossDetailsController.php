@@ -158,8 +158,8 @@ class WinLossDetailsController extends Controller
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
                         ,c.admin_id
-                        FROM scr_debit a 
-                        INNER JOIN scr_credit b
+                        FROM pussy_debit a 
+                        INNER JOIN pussy_credit b
                             ON a.txn_id = b.txn_id
                         LEFT JOIN member c
                             ON c.id = a.member_id
@@ -435,8 +435,8 @@ class WinLossDetailsController extends Controller
                         SELECT 
                         a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
                         ,c.admin_id
-                        FROM scr_debit a 
-                        INNER JOIN scr_credit b
+                        FROM pussy_debit a 
+                        INNER JOIN pussy_credit b
                             ON a.txn_id = b.txn_id
                         LEFT JOIN member c
                             ON c.id = a.member_id
@@ -730,8 +730,8 @@ class WinLossDetailsController extends Controller
                     COUNT(a.bet) 'total_wager',
                     SUM(a.bet) 'turnover',
                     SUM(b.amount - a.bet) 'win_loss'
-                    FROM scr_debit a
-                    INNER JOIN scr_credit b ON a.txn_id = b.txn_id 
+                    FROM pussy_debit a
+                    INNER JOIN pussy_credit b ON a.txn_id = b.txn_id 
                     INNER JOIN member c ON a.member_id = c.id
                     WHERE a.member_id= :id6
                         AND (a.created_at >= :start_date12 OR '' = :start_date13)
@@ -1043,8 +1043,8 @@ class WinLossDetailsController extends Controller
                             WHEN (b.amount - a.bet) = 0  THEN 't'
                             ELSE 0
                             END AS bet_status
-                        FROM scr_debit a
-                        INNER JOIN scr_credit b ON a.txn_id = b.txn_id 
+                        FROM pussy_debit a
+                        INNER JOIN pussy_credit b ON a.txn_id = b.txn_id 
                         INNER JOIN member c ON a.member_id = c.id
                         WHERE a.member_id= :id6
                             AND (a.created_at >= :start_date12 OR '' = :start_date13)
@@ -1301,7 +1301,7 @@ class WinLossDetailsController extends Controller
                 ,['7', __('IBC')]
                 ,['8', __('JOKER')]
                 ,['9', __('918KISS')]
-                ,['10', __('SCR888')]
+                ,['10', __('PUSSY')]
                 ,['11', __('MEGA888')]
                 ,['12', __('XE88')]
 

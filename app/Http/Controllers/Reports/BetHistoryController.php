@@ -221,17 +221,17 @@ class BetHistoryController extends Controller
                             , (a.created_at + INTERVAL 8 HOUR) 'timestamp'
                             , a.bet 'debit'
                             , b.amount 'credit'
-                            , '' AS 'game_id'
+                            , a.game_id
                             , c.admin_id 
-                            , '' AS 'type'
-                             ,CASE /*WHEN b.type = 'x' THEN 'r'*/
+                            , b.type
+                             ,CASE WHEN b.type = 'x' THEN 'r'
                                 WHEN b.amount = a.bet  THEN 't'
                                 WHEN b.amount > a.bet THEN 'w'
                                 WHEN b.amount < a.bet THEN 'l'
                                 ELSE 'p'
                             END 'bet_result'
-                        FROM scr_debit a
-                        LEFT JOIN scr_credit b ON a.txn_id = b.txn_id 
+                        FROM pussy_debit a
+                        LEFT JOIN pussy_credit b ON a.txn_id = b.txn_id 
                         LEFT JOIN member c ON a.member_id = c.id 
                         WHERE a.txn_id LIKE :txn_id6
                             AND c.username LIKE :member_name6

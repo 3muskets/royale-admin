@@ -229,8 +229,8 @@ class CalculateCashback extends Command
                                         3 AS 'category',
                                         (a.bet) 'turnover',
                                         (b.amount -a.bet) 'win_loss'
-                                        FROM scr_debit a 
-                                        INNER JOIN scr_credit b
+                                        FROM pussy_debit a 
+                                        INNER JOIN pussy_credit b
                                         ON a.txn_id = b.txn_id 
                                         WHERE b.type = 'c'
                                         AND ((b.created_at + INTERVAL 8 HOUR) >= ? AND (b.created_at + INTERVAL 8 HOUR) <= ?)
