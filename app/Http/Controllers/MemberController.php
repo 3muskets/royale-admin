@@ -93,6 +93,7 @@ class MemberController extends Controller
                         , a.last_ip, b.available, c.bank, c.acc_no, c.name,e.username 'agent'
                         , d.unread_msg
                         , a.level_id
+                        , a.address
                     FROM member a
                     LEFT JOIN member_credit b ON a.id = b.member_id
                     LEFT JOIN member_bank_info c ON a.id = c.member_id

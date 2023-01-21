@@ -202,6 +202,7 @@ function loadMainData(containerId)
                     ,["", locale['mainData.action'],false, false]
                     @endcan
                     ,["mobile",locale['mainData.mobile'],false,false]
+                    ,["address",locale['mainData.email'],false,false]
                     ,["bank",locale['mainData.bankname'],false,false]
                     ,["acc_no",locale['mainData.bankacc'],false,false]
                     ,["name",locale['mainData.bankaddress'],false,false]
@@ -213,26 +214,6 @@ function loadMainData(containerId)
                     ,["unread_msg",locale['mainData.unread_msg'],false,false]
 
                 ];
-
-    if(auth.getUserLevel() == 3)
-    {    
-        for(var i = fields.length-1 ; i > 0; i--)
-        {
-            if(fields[i][0] == "admin")
-            {
-                fields.splice(i,1);
-            }
-        }
-
-        for(var i = fields1.length-1 ; i > 0; i--)
-        {
-            if(fields1[i][0] == "admin")
-            {
-                fields1.splice(i,1);
-            }
-        }
-         
-    }
 
     var table = utils.createDataTable(containerId,mainData,fields,sortMainData,pagingMainData);
 
