@@ -315,6 +315,59 @@ class BetHistoryController extends Controller
                             AND (c.admin_id = :admin_id18 OR :admin_id19 = '')
                             AND (c.admin_id = :agent_id18 OR :agent_id19 = '')
 
+                        UNION ALL
+
+                        SELECT '13' AS 'prd_id',a.txn_id,a.member_id, c.username 'username'
+                            , (a.created_at + INTERVAL 8 HOUR) 'timestamp'
+                            , a.amount 'debit'
+                            , b.amount 'credit'
+                            , '' AS 'game_id'
+                            , c.admin_id 
+                            , '' AS 'type'
+                             ,CASE /*WHEN b.type = 'x' THEN 'r'*/
+                                WHEN b.amount = a.amount  THEN 't'
+                                WHEN b.amount > a.amount THEN 'w'
+                                WHEN b.amount < a.amount THEN 'l'
+                                ELSE 'p'
+                            END 'bet_result'
+                        FROM kaya_debit a
+                        LEFT JOIN kaya_credit b ON a.txn_id = b.txn_id 
+                        LEFT JOIN member c ON a.member_id = c.id 
+                        WHERE a.txn_id LIKE :txn_id10
+                            AND c.username LIKE :member_name10
+                            AND (:start_date20 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date21)
+                            AND (:end_date20 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date21)
+                            AND (c.admin_id = :admin_id20 OR :admin_id21 = '')
+                            AND (c.admin_id = :agent_id20 OR :agent_id21 = '')
+
+
+                        UNION ALL
+
+                        SELECT '11' AS 'prd_id',a.id 'txn_id',d.member_id, c.username 'username'
+                            , (a.created_at + INTERVAL 8 HOUR) 'timestamp'
+                            , a.bet 'debit'
+                            , b.amount 'credit'
+                            , '' AS 'game_id'
+                            , c.admin_id 
+                            , '' AS 'type'
+                             ,CASE /*WHEN b.type = 'x' THEN 'r'*/
+                                WHEN b.amount = a.bet  THEN 't'
+                                WHEN b.amount > a.bet THEN 'w'
+                                WHEN b.amount < a.bet THEN 'l'
+                                ELSE 'p'
+                            END 'bet_result'
+                        FROM mega_debit a
+                        LEFT JOIN mega_credit b ON a.id = b.id 
+                        LEFT JOIN mega_users d ON a.login_id = d.login_id
+                        LEFT JOIN member c ON d.member_id = c.id 
+                        WHERE a.id LIKE :txn_id11
+                            AND c.username LIKE :member_name11
+                            AND (:start_date22 = '' OR (a.created_at + INTERVAL 8 HOUR) >= :start_date23)
+                            AND (:end_date22 = '' OR (a.created_at + INTERVAL 8 HOUR) <= :end_date23)
+                            AND (c.admin_id = :admin_id22 OR :admin_id23 = '')
+                            AND (c.admin_id = :agent_id22 OR :agent_id23 = '')
+
+
                     ) a
                     LEFT JOIN admin b ON a.admin_id = b.id
                     
@@ -449,6 +502,31 @@ class BetHistoryController extends Controller
             $params['admin_id19'] = $adminId;
             $params['agent_id18'] = $agentId;
             $params['agent_id19'] = $agentId;
+
+
+            $params['txn_id10'] = '%'.$txnId.'%';
+            $params['member_name10'] = '%'.$memberName.'%';
+            $params['start_date20'] = $startDate;
+            $params['start_date21'] = $startDate;
+            $params['end_date20'] = $endDate;
+            $params['end_date21'] = $endDate;
+            $params['admin_id20'] = $adminId;
+            $params['admin_id21'] = $adminId;
+            $params['agent_id20'] = $agentId;
+            $params['agent_id21'] = $agentId;
+
+
+            $params['txn_id11'] = '%'.$txnId.'%';
+            $params['member_name11'] = '%'.$memberName.'%';
+            $params['start_date22'] = $startDate;
+            $params['start_date23'] = $startDate;
+            $params['end_date22'] = $endDate;
+            $params['end_date23'] = $endDate;
+            $params['admin_id22'] = $adminId;
+            $params['admin_id23'] = $adminId;
+            $params['agent_id22'] = $agentId;
+            $params['agent_id23'] = $agentId;
+
 
             $orderByAllow = ['txn_id','debit','credit','username','timestamp','bet_result','game_id'];
             $orderByDefault = 'timestamp desc';

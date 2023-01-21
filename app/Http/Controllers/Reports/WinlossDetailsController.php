@@ -219,6 +219,42 @@ class WinLossDetailsController extends Controller
                         GROUP BY a.member_id,c.username,c.admin_id  
 
 
+                        UNION ALL
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM kaya_debit a 
+                        INNER JOIN kaya_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date20 OR '' = :start_date21)
+                            AND (a.created_at <= :end_date20 OR '' = :end_date21)
+                            AND (c.admin_id = :admin_id20 OR :admin_id21 = '')
+                            AND (c.admin_id = :agent_id20 OR :agent_id21 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id  
+
+
+                        UNION ALL
+
+                        SELECT 
+                        d.member_id,c.username,COUNT(a.id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
+                        FROM mega_debit a 
+                        INNER JOIN mega_credit b
+                            ON a.id = b.id
+                        LEFT JOIN mega_users d
+                            ON a.login_id = d.login_id
+                        LEFT JOIN member c
+                            ON c.id = d.member_id
+                        WHERE (a.created_at >= :start_date22 OR '' = :start_date23)
+                            AND (a.created_at <= :end_date22 OR '' = :end_date23)
+                            AND (c.admin_id = :admin_id22 OR :admin_id23 = '')
+                            AND (c.admin_id = :agent_id22 OR :agent_id23 = '')
+                        GROUP BY d.member_id,c.username,c.admin_id  
+
+
                     ) a
                     LEFT JOIN admin b ON a.admin_id = b.id
                     GROUP BY a.member_id,a.username,b.username
@@ -247,6 +283,10 @@ class WinLossDetailsController extends Controller
                     ,'start_date17' => $startDate
                     ,'start_date18' => $startDate
                     ,'start_date19' => $startDate
+                    ,'start_date20' => $startDate
+                    ,'start_date21' => $startDate
+                    ,'start_date22' => $startDate
+                    ,'start_date23' => $startDate
 
                     ,'end_date' => $endDate
                     ,'end_date1' => $endDate
@@ -268,6 +308,11 @@ class WinLossDetailsController extends Controller
                     ,'end_date17' => $endDate
                     ,'end_date18' => $endDate
                     ,'end_date19' => $endDate
+                    ,'end_date20' => $endDate
+                    ,'end_date21' => $endDate
+                    ,'end_date22' => $endDate
+                    ,'end_date23' => $endDate
+
 
                     ,'admin_id' => $adminId
                     ,'admin_id1' => $adminId
@@ -289,6 +334,10 @@ class WinLossDetailsController extends Controller
                     ,'admin_id17' => $adminId
                     ,'admin_id18' => $adminId
                     ,'admin_id19' => $adminId
+                    ,'admin_id20' => $adminId
+                    ,'admin_id21' => $adminId
+                    ,'admin_id22' => $adminId
+                    ,'admin_id23' => $adminId
 
                     ,'agent_id' => $agentId
                     ,'agent_id1' => $agentId
@@ -310,6 +359,10 @@ class WinLossDetailsController extends Controller
                     ,'agent_id17' => $agentId
                     ,'agent_id18' => $agentId
                     ,'agent_id19' => $agentId
+                    ,'agent_id20' => $agentId
+                    ,'agent_id21' => $agentId
+                    ,'agent_id22' => $agentId
+                    ,'agent_id23' => $agentId
 
                 ];
 
@@ -494,6 +547,42 @@ class WinLossDetailsController extends Controller
                             AND (c.admin_id = :agent_id18 OR :agent_id19 = '')
                         GROUP BY a.member_id,c.username,c.admin_id 
 
+
+                        UNION ALL
+
+                        SELECT 
+                        a.member_id,c.username,COUNT(a.txn_id) 'total_wager', SUM(a.amount) 'total_turnover', SUM(b.amount-a.amount) 'total_winloss' 
+                        ,c.admin_id
+                        FROM kaya_debit a 
+                        INNER JOIN kaya_credit b
+                            ON a.txn_id = b.txn_id
+                        LEFT JOIN member c
+                            ON c.id = a.member_id
+                        WHERE (a.created_at >= :start_date20 OR '' = :start_date21)
+                            AND (a.created_at <= :end_date20 OR '' = :end_date21)
+                            AND (c.admin_id = :admin_id20 OR :admin_id21 = '')
+                            AND (c.admin_id = :agent_id20 OR :agent_id21 = '')
+                        GROUP BY a.member_id,c.username,c.admin_id 
+
+
+                        UNION ALL
+
+                        SELECT 
+                        d.member_id,c.username,COUNT(a.id) 'total_wager', SUM(a.bet) 'total_turnover', SUM(b.amount-a.bet) 'total_winloss' 
+                        ,c.admin_id
+                        FROM mega_debit a 
+                        INNER JOIN mega_credit b
+                            ON a.id = b.id
+                        LEFT JOIN mega_users d
+                            ON a.login_id = d.login_id
+                        LEFT JOIN member c
+                            ON c.id = d.member_id
+                        WHERE (a.created_at >= :start_date22 OR '' = :start_date23)
+                            AND (a.created_at <= :end_date22 OR '' = :end_date23)
+                            AND (c.admin_id = :admin_id22 OR :admin_id23 = '')
+                            AND (c.admin_id = :agent_id22 OR :agent_id23 = '')
+                        GROUP BY d.member_id,c.username,c.admin_id 
+
                     ) a
                     LEFT JOIN admin b ON a.admin_id = b.id
 
@@ -521,6 +610,10 @@ class WinLossDetailsController extends Controller
                     ,'start_date17' => $startDate
                     ,'start_date18' => $startDate
                     ,'start_date19' => $startDate
+                    ,'start_date20' => $startDate
+                    ,'start_date21' => $startDate
+                    ,'start_date22' => $startDate
+                    ,'start_date23' => $startDate
 
                     ,'end_date' => $endDate
                     ,'end_date1' => $endDate
@@ -542,6 +635,11 @@ class WinLossDetailsController extends Controller
                     ,'end_date17' => $endDate
                     ,'end_date18' => $endDate
                     ,'end_date19' => $endDate
+                    ,'end_date20' => $endDate
+                    ,'end_date21' => $endDate
+                    ,'end_date22' => $endDate
+                    ,'end_date23' => $endDate
+
 
                     ,'admin_id' => $adminId
                     ,'admin_id1' => $adminId
@@ -563,6 +661,11 @@ class WinLossDetailsController extends Controller
                     ,'admin_id17' => $adminId
                     ,'admin_id18' => $adminId
                     ,'admin_id19' => $adminId
+                    ,'admin_id20' => $adminId
+                    ,'admin_id21' => $adminId
+                    ,'admin_id22' => $adminId
+                    ,'admin_id23' => $adminId
+
 
                     ,'agent_id' => $agentId
                     ,'agent_id1' => $agentId
@@ -584,6 +687,12 @@ class WinLossDetailsController extends Controller
                     ,'agent_id17' => $agentId
                     ,'agent_id18' => $agentId
                     ,'agent_id19' => $agentId
+                    ,'agent_id20' => $agentId
+                    ,'agent_id21' => $agentId
+                    ,'agent_id22' => $agentId
+                    ,'agent_id23' => $agentId
+
+
                 ];
 
 
@@ -787,6 +896,40 @@ class WinLossDetailsController extends Controller
                     GROUP BY a.member_id, c.username   
 
 
+                    UNION ALL
+
+                    SELECT '13' AS 'prd_id',
+                    a.member_id 'member_id',
+                    c.username 'username',
+                    COUNT(a.amount) 'total_wager',
+                    SUM(a.amount) 'turnover',
+                    SUM(b.amount - a.amount) 'win_loss'
+                    FROM kaya_debit a
+                    INNER JOIN kaya_credit b ON a.txn_id = b.txn_id 
+                    INNER JOIN member c ON a.member_id = c.id
+                    WHERE a.member_id= :id10
+                        AND (a.created_at >= :start_date20 OR '' = :start_date21)
+                        AND (a.created_at <= :end_date20 OR '' = :end_date21)
+                    GROUP BY a.member_id, c.username   
+
+
+                    UNION ALL
+
+                    SELECT '11' AS 'prd_id',
+                    d.member_id 'member_id',
+                    c.username 'username',
+                    COUNT(a.bet) 'total_wager',
+                    SUM(a.bet) 'turnover',
+                    SUM(b.amount - a.bet) 'win_loss'
+                    FROM mega_debit a
+                    INNER JOIN mega_credit b ON a.id = b.id 
+                    INNER JOIN mega_users d ON a.login_id = d.login_id
+                    INNER JOIN member c ON d.member_id = c.id
+                    WHERE d.member_id= :id11
+                        AND (a.created_at >= :start_date22 OR '' = :start_date23)
+                        AND (a.created_at <= :end_date22 OR '' = :end_date23)
+                    GROUP BY d.member_id, c.username   
+
                 ";
     
                 $params = [
@@ -800,6 +943,8 @@ class WinLossDetailsController extends Controller
                         ,'id7' => $id
                         ,'id8' => $id
                         ,'id9' => $id
+                        ,'id10' => $id
+                        ,'id11' => $id
                         
                         ,'start_date' => $startDate
                         ,'start_date1' => $startDate
@@ -821,6 +966,10 @@ class WinLossDetailsController extends Controller
                         ,'start_date17' => $startDate 
                         ,'start_date18' => $startDate
                         ,'start_date19' => $startDate                        
+                        ,'start_date20' => $startDate
+                        ,'start_date21' => $startDate    
+                        ,'start_date22' => $startDate
+                        ,'start_date23' => $startDate  
 
                         ,'end_date' => $endDate
                         ,'end_date1' => $endDate
@@ -842,7 +991,10 @@ class WinLossDetailsController extends Controller
                         ,'end_date17' => $endDate
                         ,'end_date18' => $endDate 
                         ,'end_date19' => $endDate 
-
+                        ,'end_date20' => $endDate 
+                        ,'end_date21' => $endDate 
+                        ,'end_date22' => $endDate 
+                        ,'end_date23' => $endDate                         
 
                     ];
 
@@ -905,6 +1057,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                        a.game_id,
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -927,6 +1080,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                         '' as 'game_id',
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -949,6 +1103,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                         '' as 'game_id',
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -971,6 +1126,7 @@ class WinLossDetailsController extends Controller
                         a.bet 'stake',
                         (b.amount - a.bet) 'win_loss',
                         a.created_at 'debit_date',
+                        a.game_id,
                         CASE
                             WHEN (b.amount - a.bet) > 0  THEN 'w'
                             WHEN (b.amount - a.bet) < 0  THEN 'l'
@@ -993,6 +1149,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                        a.game_id,
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -1015,6 +1172,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.winloss) 'win_loss',
                         a.created_at 'debit_date',
+                         '' as 'game_id',
                         CASE
                             WHEN (b.winloss) > 0  THEN 'w'
                             WHEN (b.winloss) < 0  THEN 'l'
@@ -1037,6 +1195,7 @@ class WinLossDetailsController extends Controller
                         a.bet 'stake',
                         (b.amount - a.bet) 'win_loss',
                         a.created_at 'debit_date',
+                        a.game_id,
                         CASE
                             WHEN (b.amount - a.bet) > 0  THEN 'w'
                             WHEN (b.amount - a.bet) < 0  THEN 'l'
@@ -1060,6 +1219,7 @@ class WinLossDetailsController extends Controller
                         a.bet 'stake',
                         (b.amount - a.bet) 'win_loss',
                         a.created_at 'debit_date',
+                         '' as 'game_id',
                         CASE
                             WHEN (b.amount - a.bet) > 0  THEN 'w'
                             WHEN (b.amount - a.bet) < 0  THEN 'l'
@@ -1082,6 +1242,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                         '' as 'game_id',
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -1105,6 +1266,7 @@ class WinLossDetailsController extends Controller
                         a.amount 'stake',
                         (b.amount - a.amount) 'win_loss',
                         a.created_at 'debit_date',
+                        a.game_id,
                         CASE
                             WHEN (b.amount - a.amount) > 0  THEN 'w'
                             WHEN (b.amount - a.amount) < 0  THEN 'l'
@@ -1119,6 +1281,56 @@ class WinLossDetailsController extends Controller
                             AND (a.created_at <= :end_date18 OR '' = :end_date19)
 
 
+                        UNION ALL
+
+
+                        SELECT '13' AS 'prd_id',
+                        a.txn_id,
+                        a.member_id 'member_id',
+                        c.username 'username',
+                        a.amount 'stake',
+                        (b.amount - a.amount) 'win_loss',
+                        a.created_at 'debit_date',
+                        '' as 'game_id',
+                        CASE
+                            WHEN (b.amount - a.amount) > 0  THEN 'w'
+                            WHEN (b.amount - a.amount) < 0  THEN 'l'
+                            WHEN (b.amount - a.amount) = 0  THEN 't'
+                            ELSE 0
+                            END AS bet_status
+                        FROM kaya_debit a
+                        INNER JOIN kaya_credit b ON a.txn_id = b.txn_id 
+                        INNER JOIN member c ON a.member_id = c.id
+                        WHERE a.member_id= :id10
+                            AND (a.created_at >= :start_date20 OR '' = :start_date21)
+                            AND (a.created_at <= :end_date20 OR '' = :end_date21)
+
+
+
+                        UNION ALL
+
+
+                        SELECT '11' AS 'prd_id',
+                        a.id,
+                        d.member_id 'member_id',
+                        c.username 'username',
+                        a.bet 'stake',
+                        (b.amount - a.bet) 'win_loss',
+                        a.created_at 'debit_date',
+                        '' as 'game_id',
+                        CASE
+                            WHEN (b.amount - a.bet) > 0  THEN 'w'
+                            WHEN (b.amount - a.bet) < 0  THEN 'l'
+                            WHEN (b.amount - a.bet) = 0  THEN 't'
+                            ELSE 0
+                            END AS bet_status
+                        FROM mega_debit a
+                        INNER JOIN mega_credit b ON a.id = b.id 
+                        INNER JOIN mega_users d ON a.login_id = d.login_id
+                        INNER JOIN member c ON d.member_id = c.id
+                        WHERE d.member_id= :id11
+                            AND (a.created_at >= :start_date22 OR '' = :start_date23)
+                            AND (a.created_at <= :end_date22 OR '' = :end_date23)
 
                     ) AS a
                     WHERE a.prd_id = :prd_id
@@ -1138,6 +1350,8 @@ class WinLossDetailsController extends Controller
                         ,'id7' => $id
                         ,'id8' => $id
                         ,'id9' => $id
+                        ,'id10' => $id
+                        ,'id11' => $id
    
                         
                         ,'start_date' => $startDate
@@ -1160,7 +1374,10 @@ class WinLossDetailsController extends Controller
                         ,'start_date17' => $startDate
                         ,'start_date18' => $startDate
                         ,'start_date19' => $startDate
-                    
+                        ,'start_date20' => $startDate
+                        ,'start_date21' => $startDate                    
+                        ,'start_date22' => $startDate
+                        ,'start_date23' => $startDate
 
                         ,'end_date' => $endDate
                         ,'end_date1' => $endDate
@@ -1182,7 +1399,10 @@ class WinLossDetailsController extends Controller
                         ,'end_date17' => $endDate
                         ,'end_date18' => $endDate
                         ,'end_date19' => $endDate
-
+                        ,'end_date20' => $endDate
+                        ,'end_date21' => $endDate
+                        ,'end_date22' => $endDate
+                        ,'end_date23' => $endDate
 
                     ];
 
@@ -1304,6 +1524,7 @@ class WinLossDetailsController extends Controller
                 ,['10', __('PUSSY')]
                 ,['11', __('MEGA888')]
                 ,['12', __('XE88')]
+                ,['13', __('KAYA')]
 
             ];
     }

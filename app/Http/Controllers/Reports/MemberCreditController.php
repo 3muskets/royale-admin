@@ -50,7 +50,7 @@ class MemberCreditController extends Controller
 
     
             $sql = "
-                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator',f.payment_type,g.username 'agent',txn_type
+                    SELECT a.txn_id, a.type, a.credit_before, a.amount, (a.created_at + INTERVAL 8 HOUR) 'created_at', a.remark , b.username 'member', c.username 'operator',f.payment_type,g.username 'agent',txn_type,a.prd_id
                     FROM member_credit_txn a
                     LEFT JOIN member b 
                     ON a.member_id = b.id
@@ -91,6 +91,8 @@ class MemberCreditController extends Controller
 
             $aryTxnType = self::getOptionsTxnType();
 
+            $aryProduct = self::getOptionsProduct();
+
             foreach($data['results'] as $d)
             {
                 $d->type_details = Helper::getOptionsValue($arrType, $d->type);
@@ -115,6 +117,22 @@ class MemberCreditController extends Controller
 
 
                 $d->txn_type_desc = Helper::getOptionsValue($aryTxnType, $d->txn_type);
+
+
+                $d->transfer_detail = '';
+
+
+                if($d->txn_type == 3)
+                {
+
+                    $d->prd_name = Helper::getOptionsValue($aryProduct, $d->prd_id);
+
+                   if($d->type == 2)
+                        $d->transfer_detail = $d->prd_name.' transfer to Main Wallet';
+                    else
+                        $d->transfer_detail ='Main Wallet transfer to '.$d->prd_name;
+
+                }
 
 
 
@@ -161,6 +179,29 @@ class MemberCreditController extends Controller
                 ,['7',__('Cashback')]
                 ,['8',__('Adjustment')]
             ];
+    }
+
+
+    public static function getOptionsProduct()
+    {
+        return  [
+                ['1000', __('SBO')]
+                ,['1001', __('EVO')]
+                ,['1002', __('IBC')]
+                ,['1003', __('SA Gaming')]
+                ,['1004', __('ALL BET')]
+                ,['1005', __('Playtech')]
+                ,['1006', __('JOKER')]
+                ,['1007', __('XE88')]
+                ,['1008', __('MEGA888')]
+                ,['1009', __('NOE')]
+                ,['1010', __('SCR')]
+                ,['1011', __('PUSSY')]
+                ,['1012', __('SexyGaming')]
+                ,['1013', __('KAYA')]
+            ];
+
+
     }
 
 

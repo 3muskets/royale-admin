@@ -237,21 +237,36 @@ class CalculateCashback extends Command
 
                                         UNION ALL
 
-                                        SELECT a.txn_id,a.member_id,'11' as 'provider_id',a.created_at,
-                                        1 AS 'category',
+                                        SELECT a.txn_id,a.member_id,'13' as 'provider_id',a.created_at,
+                                        3 AS 'category',
                                         (a.amount) 'turnover',
                                         (b.amount -a.amount) 'win_loss'
-                                        FROM xe88_debit a 
-                                        INNER JOIN xe88_credit b
+                                        FROM kaya_debit a 
+                                        INNER JOIN kaya_credit b
                                             ON a.txn_id = b.txn_id 
                                         WHERE ((b.created_at + INTERVAL 8 HOUR) >= ? AND (b.created_at + INTERVAL 8 HOUR) <= ?)
 
+
+                                        UNION ALL
+
+                                        SELECT a.id 'txn_id',c.member_id,'11' as 'provider_id',a.created_at,
+                                        3 AS 'category',
+                                        (a.bet) 'turnover',
+                                        (b.amount -a.bet) 'win_loss'
+                                        FROM mega_debit a 
+                                        INNER JOIN mega_credit b
+                                            ON a.id = b.id 
+                                        INNER JOIN mega_users c
+                                            ON a.login_id = c.login_id
+                                        WHERE ((b.created_at + INTERVAL 8 HOUR) >= ? AND (b.created_at + INTERVAL 8 HOUR) <= ?)
 
                                     ) AS a
                                     GROUP BY a.member_id
 
 
                     ",[$prevStartDate,$prevEndDate
+                       ,$prevStartDate,$prevEndDate
+                       ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate
                        ,$prevStartDate,$prevEndDate

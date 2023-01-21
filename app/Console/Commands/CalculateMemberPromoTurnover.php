@@ -198,16 +198,6 @@ class CalculateMemberPromoTurnover extends Command
                                     ON a.txn_id = b.txn_id 
                                 WHERE b.type = 'c' AND b.is_process IS NULL
 
-                                UNION ALL
-
-                                SELECT a.txn_id,a.member_id,'11' as 'provider_id',a.created_at,
-                                3 AS 'category',
-                                (a.amount) 'turnover',
-                                (b.amount -a.amount) 'win_loss'
-                                FROM pt_debit a 
-                                INNER JOIN pt_credit b
-                                    ON a.txn_id = b.txn_id 
-                                WHERE b.is_process IS NULL
 
                                 UNION ALL
 
@@ -220,6 +210,31 @@ class CalculateMemberPromoTurnover extends Command
                                     ON a.txn_id = b.txn_id 
                                 WHERE b.is_process IS NULL
 
+
+                                UNION ALL
+
+                                SELECT a.txn_id,a.member_id,'13' as 'provider_id',a.created_at,
+                                3 AS 'category',
+                                (a.amount) 'turnover',
+                                (b.amount -a.amount) 'win_loss'
+                                FROM kaya_debit a 
+                                INNER JOIN kaya_credit b
+                                    ON a.txn_id = b.txn_id 
+                                WHERE b.is_process IS NULL
+
+
+                                UNION ALL
+
+                                SELECT a.id 'txn_id',c.member_id,'11' as 'provider_id',a.created_at,
+                                3 AS 'category',
+                                (a.bet) 'turnover',
+                                (b.amount -a.bet) 'win_loss'
+                                FROM mega_debit a 
+                                INNER JOIN mega_credit b
+                                    ON a.id = b.id 
+                                INNER JOIN mega_users c
+                                    ON a.login_id = c.login_id
+                                WHERE b.is_process IS NULL
 
                 ");
 
@@ -320,7 +335,7 @@ class CalculateMemberPromoTurnover extends Command
                 else if($providerId == 11)
                 {
                     DB::update("
-                        UPDATE pt_credit
+                        UPDATE mega_credit
                         SET is_process = ?
                         WHERE txn_id = ?
                         ",['1',$txnId]
@@ -330,6 +345,15 @@ class CalculateMemberPromoTurnover extends Command
                 {
                     DB::update("
                         UPDATE xe88_credit
+                        SET is_process = ?
+                        WHERE txn_id = ?
+                        ",['1',$txnId]
+                    );                    
+                }
+                else if($providerId == 13)
+                {
+                    DB::update("
+                        UPDATE kaya_credit
                         SET is_process = ?
                         WHERE txn_id = ?
                         ",['1',$txnId]

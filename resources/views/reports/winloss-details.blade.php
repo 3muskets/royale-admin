@@ -277,6 +277,7 @@ function loadMainData(containerId)
     var fields = [  
                 ["debit_date", locale['inform'],true,false]
 /*                ,["credit_date", locale['selection_game'],true,false]*/
+                ,["game_id",'Game ID',true,true]
                 ,["stake",locale['stake'],true,true]
                 ,["bet_status",locale['status'],true,true]
                 ,["win_loss",locale['mb_win_loss'] ,true,true]

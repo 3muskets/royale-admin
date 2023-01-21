@@ -89,6 +89,7 @@ function loadMainData(containerId)
                 ,["member",locale['member'],false,false]   
                 ,["txn_type_desc",'Transaction Type',false,false]        
                 ,["type_details",locale['type'],false,false]
+                ,["transfer_detail",'Transfer Detail',false,false]
                 ,["credit_before",locale['credit_before'],false,true]     
                 ,["transfer_in",locale['transfer_in'],false,true]
                 ,["transfer_out",locale['transfer_out'],false,true]
