@@ -189,6 +189,27 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
+
+        Gate::define('permissions.view_member_blacklist_bank', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('view_member_blacklist_bank'))
+                return true;
+            else
+                return false;
+
+        });
+        Gate::define('permissions.edit_member_blacklist_bank', function ($user) 
+        {
+            //for settings
+            if(Helper::checkUserPermissions('edit_member_blacklist_bank'))
+                return true;
+            else
+                return false;
+
+        });
+
+
         Gate::define('permissions.view_banking_acc', function ($user) 
         {
             //for settings

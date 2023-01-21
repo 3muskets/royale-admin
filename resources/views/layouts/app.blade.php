@@ -421,7 +421,7 @@
                         <a class="nav-link" href="/home"><i class="icon-home"></i> {{ __('app.sidebar.home') }}</a>
                     </li>
                     @can('system.accounts.admin')
-                    @canany(['permissions.member_credit','permissions.view_member_list','permissions.view_member_levelsetting'])
+                    @canany(['permissions.member_credit','permissions.view_member_list','permissions.view_member_levelsetting','permissions.view_member_blacklist_bank'])
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> 
                              {{ __('app.sidebar.membermanagement') }}
@@ -451,7 +451,16 @@
                                 </a>
                             </li> 
                             @endcan
-                            @endcan    
+                            @endcan 
+
+                            @can('permissions.view_member_blacklist_bank')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/merchants/merchant/member/blacklistbank"><i class="icon-cursor"></i> 
+                                   Member BlackList Bank
+                                </a>
+                            </li> 
+                            @endcan
+                               
                         </ul>
                     </li> 
                     @endcan

@@ -108,6 +108,8 @@ Route::get('/merchants/merchant/member', 'ViewControllers\MemberViewController@i
 Route::get('/merchants/merchant/member/new', 'ViewControllers\MemberViewController@new');
 
 
+
+
 //ajax
 Route::post('/ajax/merchants/merchant/create', 'ViewControllers\DownlineViewController@create');
 Route::post('/ajax/merchants/merchant/member/create', 'ViewControllers\MemberViewController@create');
@@ -131,6 +133,19 @@ Route::get('/merchants/merchant/sma/member', 'ViewControllers\MemberDetailsViewC
 Route::get('/merchants/merchant/sma/member/list', 'ViewControllers\MemberDetailsViewController@getList');
 
 
+
+/*
+|--------------------------------------------------------------------------
+| Member Bank BlackList Details
+|--------------------------------------------------------------------------
+ */
+
+Route::get('/merchants/merchant/member/blacklistbank', 'ViewControllers\MemberBankBlackListViewController@index');
+
+
+Route::get('/ajax/member/bank/blacklist', 'ViewControllers\MemberBankBlackListViewController@getlist');
+Route::post('/ajax/member/bank/blacklist/add', 'ViewControllers\MemberBankBlackListViewController@add');
+Route::post('/ajax/member/bank/blacklist/delete', 'ViewControllers\MemberBankBlackListViewController@delete');
 
 
 /*

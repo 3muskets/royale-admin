@@ -322,6 +322,18 @@
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <li>
+                                                    <input type="checkbox" class="checkul" id="parent-member_blacklist_bank">Member BlackList Bank
+                                                    <ul>
+                                                        <li>
+                                                            <input type="checkbox" id="view_member_blacklist_bank">View
+                                                        </li>
+                                                        <li>
+                                                            <input type="checkbox" id="edit_member_blacklist_bank">Edit
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                
                                             </ul>
                                         </li>
                                     </div>
